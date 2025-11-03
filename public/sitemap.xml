@@ -2,30 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/writeups/hackmyvm/</loc>
+    <loc>https://hackstark.netlify.app/writeups/hackmyvm/</loc>
     <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/writeups/hackmyvm/birdeye/</loc>
+    <loc>https://hackstark.netlify.app/writeups/hackmyvm/birdeye/</loc>
     <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>https://hackstark.netlify.app/categories/</loc>
     <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/</loc>
+    <loc>https://hackstark.netlify.app/</loc>
     <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/hackmyvm/</loc>
+    <loc>https://hackstark.netlify.app/categories/hackmyvm/</loc>
     <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/linux/</loc>
+    <loc>https://hackstark.netlify.app/tags/linux/</loc>
     <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/privilege-escalation/</loc>
+    <loc>https://hackstark.netlify.app/tags/privilege-escalation/</loc>
     <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://hackstark.netlify.app/tags/</loc>
     <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/writeups/vulnhub/</loc>
+    <loc>https://hackstark.netlify.app/writeups/vulnhub/</loc>
   </url>
 </urlset>
