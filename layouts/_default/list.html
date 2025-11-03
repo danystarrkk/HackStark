@@ -1,0 +1,64 @@
+{{- define "main" }}
+
+{{- if (and site.Params.profileMode.enabled .IsHome) }}
+{{- partial "index_profile.html" . }}
+{{- else }}
+
+{{- if not .IsHome | and .Title }}
+<header class="page-header">
+  {{- partial "breadcrumbs.html" . }}
+  <h1>{{ .Title }}</h1>
+</header>
+{{- end }}
+
+{{- if .Content }}
+<div class="post-content">
+  {{- if not (.Param "disableAnchoredHeadings") }}
+  {{- partial "anchored_headings.html" .Content -}}
+  {{- else }}
+  {{ .Content }}
+  {{- end }}
+</div>
+{{- end }}
+
+{{- $pages := union .RegularPages .Sections }}
+
+{{- if .IsHome }}
+{{- $pages = where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true" }}
+{{- end }}
+
+{{- $paginator := .Paginate $pages }}
+
+<section class="custom-post-list">
+  {{ range $page := $paginator.Pages }}
+  <a href="{{ $page.Permalink }}" class="custom-post-card">
+    {{ with $page.Params.image }}
+    <div class="custom-thumb" style="background-image: url('{{ . }}');"></div>
+    {{ else }}
+    <div class="custom-thumb placeholder"></div>
+    {{ end }}
+    <div class="custom-info">
+      <h2>{{ $page.Title }}</h2>
+      <p class="custom-date">{{ $page.Date.Format "January 2, 2006" }}</p>
+    </div>
+  </a>
+  {{ end }}
+</section>
+
+{{- if gt $paginator.TotalPages 1 }}
+<footer class="page-footer">
+  <nav class="pagination">
+    {{- if $paginator.HasPrev }}
+    <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">« Prev</a>
+    {{- end }}
+    {{- if $paginator.HasNext }}
+    <a class="next" href="{{ $paginator.Next.URL | absURL }}">Next »</a>
+    {{- end }}
+  </nav>
+</footer>
+{{- end }}
+
+{{- end }}
+
+{{- end }}
