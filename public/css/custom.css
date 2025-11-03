@@ -4,6 +4,8 @@
 
 /* ---------- Root Variables ---------- */
 :root {
+  --bg-color: #1a1c1e;
+  /* color base del home */
   --color-bg-start: #1a1e28;
   /* Más profundo que el Nord original */
   --color-bg-end: #0f141c;
@@ -32,7 +34,7 @@
 
 /* ---------- Base ---------- */
 body {
-  background: radial-gradient(circle at top, var(--color-bg-start), var(--color-bg-end));
+  background: var(--bg-color);
   color: var(--color-text);
   font-family: var(--font-main);
   overflow-x: hidden;
@@ -165,16 +167,6 @@ body {
   }
 }
 
-/* ---------- Footer ---------- */
-footer {
-  text-align: center;
-  padding: 20px;
-  color: var(--color-muted);
-  font-size: 0.9rem;
-  border-top: 1px solid var(--color-border);
-  margin-top: 60px;
-}
-
 /* ---------- Scrollbar ---------- */
 ::-webkit-scrollbar {
   width: 8px;
@@ -191,7 +183,7 @@ footer {
 
 .writeup-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
   margin-top: 3rem;
   padding: 1rem 2rem;
@@ -253,4 +245,217 @@ footer {
 
 .post-content a {
   box-shadow: none;
+}
+
+.main {
+  max-width: 1100px;
+}
+
+.post-title {
+  justify-content: center;
+}
+
+.post-description,
+.post-meta {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.post-content img {
+  margin: 0 auto;
+}
+
+/* === BLOQUES DE CÓDIGO ESTILO TERMINAL === */
+pre {
+  background-color: #1f2327 !important;
+  color: #e0e0e0;
+  border-radius: 10px;
+  padding: 30px 0 5px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  font-family: 'Fira Code', monospace;
+}
+
+/* Añade una barra tipo terminal arriba */
+pre::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 100%;
+  background-color: #2b3136;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+/* Botones tipo macOS en la barra */
+pre::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ff5f56;
+  box-shadow: 20px 0 #ffbd2e, 40px 0 #27c93f;
+  padding: 0;
+}
+
+/* Margen para no solaparse con la barra */
+pre code {
+  display: block;
+  margin-top: 15px;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Colores para sintaxis tipo shell */
+code {
+  color: #e0e0e0;
+}
+
+code .hl-keyword {
+  color: #ff79c6;
+}
+
+code .hl-string {
+  color: #f1fa8c;
+}
+
+code .hl-variable {
+  color: #8be9fd;
+}
+
+code .hl-number {
+  color: #bd93f9;
+}
+
+code .hl-comment {
+  color: #6272a4;
+}
+
+code .hl-command {
+  color: #50fa7b;
+}
+
+.post-content .highlight:not(table) {
+  background: none !important;
+  margin: 30px auto;
+}
+
+.post-content pre code {
+  background: none !important;
+  margin: 10px;
+}
+
+/* === BOTÓN COPIAR CÓDIGO === */
+.copy-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #d8dee9;
+  font-size: 0.9rem;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 10;
+}
+
+.copy-button:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* === Estilo Nord Dark Deep para lista de posts === */
+.custom-post-list {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+}
+
+.custom-post-card {
+  display: flex;
+  align-items: center;
+  background-color: #1f2327;
+  /* Fondo principal oscuro */
+  border: 1px solid #2b303b;
+  /* Borde sutil nord */
+  border-radius: 12px;
+  text-decoration: none;
+  overflow: hidden;
+  transition: transform 0.25s ease, background 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.custom-post-card:hover {
+  background-color: #2b303b;
+  box-shadow: 0 0 15px rgba(136, 192, 208, 0.1);
+  transform: translateY(-4px);
+}
+
+.custom-thumb {
+  width: 140px;
+  height: 100px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+  border-right: 1px solid #3b4252;
+}
+
+.custom-thumb.placeholder {
+  background-color: #3b4252;
+}
+
+.custom-info {
+  padding: 1rem;
+  flex: 1;
+}
+
+.custom-info h2 {
+  color: #eceff4;
+  font-size: 1.15rem;
+  margin: 0 0 0.3rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.custom-date {
+  color: #81a1c1;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* Hover sobre el título para un sutil cambio */
+.custom-post-card:hover .custom-info h2 {
+  color: #88c0d0;
+  transition: color 0.3s ease;
+}
+
+/* Responsivo */
+@media (max-width: 700px) {
+  .custom-post-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .custom-thumb {
+    width: 100%;
+    height: 160px;
+    border-right: none;
+    border-bottom: 1px solid #3b4252;
+  }
+
+  .custom-info {
+    padding: 0.8rem 1rem 1rem;
+  }
 }
