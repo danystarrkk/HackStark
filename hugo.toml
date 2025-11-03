@@ -1,0 +1,47 @@
+baseURL = "https://hackstark.github.io/"
+languageCode = "es"
+title = "Hack Stark ×͜×"
+theme = "PaperMod"
+
+[params]
+  defaultTheme = "dark"
+  ShowReadingTime = true
+  disableScrollBarStyle = false
+  disableThemeToggle = true
+
+  [params.profileMode]
+    enabled = true
+    title = "Stark ×͜×"
+    subtitle = "No busco atajos ni fama. Busco entender la raíz del sistema, porque solo quien comprende lo invisible puede dominar lo imposible."
+    imageUrl = "images/stark.jpeg"
+    imageTitle = "HackStark logo"
+    imageWidth = 170
+    imageHeight = 170
+
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/danystarrkk" # cambia por tu GitHub real
+
+  [params.assets]
+    css = ["css/custom.css"]
+  
+
+[menu]
+
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+
+  [[menu.main]]
+    name = "WriteUps"
+    url = "/writeups/"
+    weight = 2
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[pagination]
+  pagerSize = 10

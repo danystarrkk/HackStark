@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Linux on Hack Stark ×͜×</title>
+    <link>http://localhost:1313/tags/linux/</link>
+    <description>Recent content in Linux on Hack Stark ×͜×</description>
+    <generator>Hugo -- 0.152.2</generator>
+    <language>es</language>
+    <lastBuildDate>Mon, 03 Nov 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Birdeye</title>
+      <link>http://localhost:1313/writeups/hackmyvm/birdeye/</link>
+      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/writeups/hackmyvm/birdeye/</guid>
+      <description>Writeup de la máquina Birdeye en HackMyVM.</description>
+    </item>
+  </channel>
+</rss>
