@@ -20,7 +20,16 @@
     <loc>http://localhost:1313/tags/linux/</loc>
     <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/privilege-escalation/</loc>
+    <loc>http://localhost:1313/tags/local-file-inclusion-lfi/</loc>
+    <lastmod>2025-11-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/privilegios-sudo/</loc>
+    <lastmod>2025-11-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/server-side-request-forgery-ssrf/</loc>
+    <lastmod>2025-11-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/writeups/hackmyvm/silentdev/</loc>
     <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/</loc>

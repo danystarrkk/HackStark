@@ -1,0 +1,117 @@
+<!-- Sidebar flotante dentro del main -->
+<div id="custom-sidebar">
+  <h3>Contenido</h3>
+  <ul id="custom-toc-list"></ul>
+</div>
+
+<style>
+  #custom-sidebar {
+    position: absolute;
+    right: -260px;
+    top: 0;
+    width: 220px;
+    background-color: rgba(25, 25, 25, 0.95);
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 14px;
+    z-index: 50;
+    color: #fff;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  }
+
+  @media (max-width: 1100px) {
+    #custom-sidebar {
+      display: none;
+      /* Ocultar en pantallas pequeñas */
+    }
+  }
+
+  #custom-sidebar h3 {
+    font-size: 15px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 4px;
+    text-align: center;
+  }
+
+  #custom-toc-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+
+  #custom-toc-list li {
+    margin: 6px 0;
+  }
+
+  #custom-toc-list a {
+    color: #9ad0ff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  #custom-toc-list a:hover {
+    color: #00bfff;
+  }
+
+  #custom-toc-list li.h2 {
+    margin-left: 10px;
+    font-size: 13px;
+  }
+
+  #custom-toc-list li.h3 {
+    margin-left: 20px;
+    font-size: 12px;
+  }
+
+  #custom-toc-list li.h4 {
+    margin-left: 30px;
+    font-size: 11px;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const main = document.querySelector("main");
+    const content = document.querySelector(".post-content");
+    const sidebar = document.getElementById("custom-sidebar");
+
+    if (!main || !content || !sidebar) return;
+
+    // Convert sidebar to fixed when scrolls past main
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) {
+        sidebar.style.position = "fixed";
+        sidebar.style.top = "120px";
+        sidebar.style.right = "30px";
+      } else {
+        sidebar.style.position = "absolute";
+        sidebar.style.top = "0";
+        sidebar.style.right = "-260px";
+      }
+    }, { rootMargin: "-100px 0px 0px 0px" });
+
+    observer.observe(main);
+
+    // Build TOC
+    const headings = content.querySelectorAll("h1, h2, h3, h4");
+    const tocList = document.getElementById("custom-toc-list");
+    headings.forEach((heading, index) => {
+      const id = heading.id || `heading-${index}`;
+      heading.id = id;
+
+      const li = document.createElement("li");
+      li.classList.add(heading.tagName.toLowerCase());
+
+      const a = document.createElement("a");
+      a.href = `#${id}`;
+      a.textContent = heading.textContent;
+
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+  });
+</script>

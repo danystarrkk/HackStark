@@ -1,0 +1,237 @@
+{{- define "main" }}
+
+<div class="post-container">
+  <article class="post-single">
+    <header class="post-header">
+      {{ partial "breadcrumbs.html" . }}
+      <h1 class="post-title entry-hint-parent">
+        {{ .Title }}
+        {{- if .Draft }}
+        <span class="entry-hint" title="Draft">
+          <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
+            <path
+              d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+          </svg>
+        </span>
+        {{- end }}
+      </h1>
+      {{- if .Description }}
+      <div class="post-description">
+        {{ .Description }}
+      </div>
+      {{- end }}
+      {{- if not (.Param "hideMeta") }}
+      <div class="post-meta">
+        {{- partial "post_meta.html" . -}}
+        {{- partial "translation_list.html" . -}}
+        {{- partial "edit_post.html" . -}}
+        {{- partial "post_canonical.html" . -}}
+      </div>
+      {{- end }}
+    </header>
+
+    {{- $isHidden := (.Param "cover.hiddenInSingle") | default (.Param "cover.hidden") | default false }}
+    {{- partial "cover.html" (dict "cxt" . "IsSingle" true "isHidden" $isHidden) }}
+    {{- if (.Param "ShowToc") }}
+    {{- partial "toc.html" . }}
+    {{- end }}
+
+    {{- if .Content }}
+    <div class="post-content">
+      {{- if not (.Param "disableAnchoredHeadings") }}
+      {{- partial "anchored_headings.html" .Content -}}
+      {{- else }}{{ .Content }}{{ end }}
+    </div>
+    {{- end }}
+
+    <footer class="post-footer">
+      {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
+      <ul class="post-tags">
+        {{- range ($.GetTerms $tags) }}
+        <li><a href="{{ .Permalink }}">{{ .LinkTitle }}</a></li>
+        {{- end }}
+      </ul>
+      {{- if (.Param "ShowPostNavLinks") }}
+      {{- partial "post_nav_links.html" . }}
+      {{- end }}
+      {{- if (and site.Params.ShowShareButtons (ne .Params.disableShare true)) }}
+      {{- partial "share_icons.html" . -}}
+      {{- end }}
+    </footer>
+
+    {{- if (.Param "comments") }}
+    {{- partial "comments.html" . }}
+    {{- end }}
+  </article>
+
+  <!-- ✅ Sidebar flotante a la derecha -->
+  <aside id="sidebar-toc">
+    <div class="sidebar-title">Contenido</div>
+    <ul id="toc-list"></ul>
+  </aside>
+</div>
+
+<style>
+  /* Contenedor principal del post */
+  .post-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    position: relative;
+  }
+
+  /* Contenido principal */
+  .post-single {
+    max-width: 850px;
+    flex: 1;
+    padding: 0 1rem;
+  }
+
+  /* Sidebar flotante fijo */
+  #sidebar-toc {
+    position: fixed;
+    top: 11%;
+    right: 20%;
+    width: 260px;
+    background-color: rgba(25, 25, 25, 0.95);
+    border-radius: 12px;
+    padding: 15px 20px;
+    color: #fff;
+    font-size: 14px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    transition: all 0.3s ease;
+  }
+
+  /* Título del sidebar */
+  .sidebar-title {
+    font-weight: bold;
+    color: #00bfff;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  /* Lista de encabezados */
+  #toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #toc-list li {
+    margin: 5px 0;
+  }
+
+  #toc-list li.h2 {
+    margin-left: 10px;
+    font-size: 13px;
+  }
+
+  #toc-list li.h3 {
+    margin-left: 20px;
+    font-size: 12px;
+  }
+
+  #toc-list a {
+    color: #9ad0ff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  #toc-list a:hover {
+    color: #00bfff;
+  }
+
+  /* ------- RESPONSIVE ------- */
+
+  /* En pantallas medianas el sidebar se hace más pequeño */
+  @media (max-width: 1700px) {
+    #sidebar-toc {
+      right: 15%;
+      width: 220px;
+      font-size: 13px;
+    }
+  }
+
+  /* En pantallas pequeñas se convierte en botón flotante */
+  @media (max-width: 1440px) {
+
+    .post-container {
+      justify-content: center;
+    }
+
+    #sidebar-toc {
+      position: fixed;
+      top: auto;
+      bottom: 20px;
+      right: 10%;
+      width: auto;
+      padding: 10px 14px;
+      background-color: rgba(0, 0, 0, 0.8);
+      border-radius: 8px;
+      font-size: 13px;
+      max-height: none;
+      overflow: visible;
+      cursor: pointer;
+    }
+
+    #sidebar-toc::after {
+      content: "☰ Contenido";
+      color: #00bfff;
+      font-weight: bold;
+    }
+
+    /* Ocultar lista por defecto en móviles */
+    #toc-list,
+    .sidebar-title {
+      display: none;
+    }
+
+    /* Mostrar la lista al hacer hover o tap */
+    #sidebar-toc:hover #toc-list {
+      display: block;
+      position: absolute;
+      right: 0;
+      bottom: 40px;
+      width: 220px;
+      background-color: rgba(25, 25, 25, 0.95);
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    #sidebar-toc:hover .sidebar-title {
+      display: block;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+  }
+</style>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const content = document.querySelector(".post-content");
+    const tocList = document.getElementById("toc-list");
+    if (!content || !tocList) return;
+
+    const headings = content.querySelectorAll("h1, h2, h3");
+    headings.forEach((heading, index) => {
+      const id = heading.id || `section-${index}`;
+      heading.id = id;
+
+      const li = document.createElement("li");
+      li.classList.add(heading.tagName.toLowerCase());
+
+      const a = document.createElement("a");
+      a.href = `#${id}`;
+      a.textContent = heading.textContent;
+
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+  });
+</script>
+
+{{- end }}

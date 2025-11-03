@@ -16,10 +16,24 @@
       <description></description>
     </item>
     <item>
-      <title>Privilege Escalation</title>
-      <link>http://localhost:1313/tags/privilege-escalation/</link>
+      <title>Local File Inclusion (LFI)</title>
+      <link>http://localhost:1313/tags/local-file-inclusion-lfi/</link>
       <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/privilege-escalation/</guid>
+      <guid>http://localhost:1313/tags/local-file-inclusion-lfi/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Privilegios Sudo</title>
+      <link>http://localhost:1313/tags/privilegios-sudo/</link>
+      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/privilegios-sudo/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Server-Side Request Forgery (SSRF)</title>
+      <link>http://localhost:1313/tags/server-side-request-forgery-ssrf/</link>
+      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/server-side-request-forgery-ssrf/</guid>
       <description></description>
     </item>
   </channel>

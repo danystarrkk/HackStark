@@ -35,6 +35,11 @@
 
 <script src="/js/main.js" defer></script>
 
+<link rel="icon" type="image/png" href="/images/logo.png">
+<link rel="apple-touch-icon" href="/images/logo.png">
+<link rel="shortcut icon" href="/images/logo.png">
+<meta name="theme-color" content="#2E3440">
+
 </head>
 <body class="list" id="top">
     <header class="header">
@@ -60,20 +65,21 @@
 </header>
 <main class="main">
 
-<article class="post-single">
-  <header class="post-header">
-    
-    <h1 class="post-title entry-hint-parent">
-      Writeups
-    </h1>
-    <div class="post-description">
-      Colección de writeups organizados por plataforma.
-    </div>
-    <div class="post-meta"><span title='2025-11-03 00:00:00 +0000 UTC'>November 3, 2025</span>&nbsp;·&nbsp;<span>1 min</span>
+<div class="post-container">
+  <article class="post-single">
+    <header class="post-header">
+      
+      <h1 class="post-title entry-hint-parent">
+        Writeups
+      </h1>
+      <div class="post-description">
+        Colección de writeups organizados por plataforma.
+      </div>
+      <div class="post-meta"><span title='2025-11-03 00:00:00 +0000 UTC'>November 3, 2025</span>&nbsp;·&nbsp;<span>1 min</span>
 
 </div>
-  </header> 
-  <div class="post-content"><div class="writeup-grid">
+    </header> 
+    <div class="post-content"><div class="writeup-grid">
   <a href="/writeups/hackmyvm/" class="writeup-card">
     <img src="/images/hackmyvm.png" alt="HackMyVM">
     <h2>HackMyVM</h2>
@@ -87,13 +93,183 @@
 </div>
 
 
-  </div>
+    </div>
 
-  <footer class="post-footer">
-    <ul class="post-tags">
-    </ul>
-  </footer>
-</article>
+    <footer class="post-footer">
+      <ul class="post-tags">
+      </ul>
+    </footer>
+  </article>
+
+  
+  <aside id="sidebar-toc">
+    <div class="sidebar-title">Contenido</div>
+    <ul id="toc-list"></ul>
+  </aside>
+</div>
+
+<style>
+   
+  .post-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    position: relative;
+  }
+
+   
+  .post-single {
+    max-width: 850px;
+    flex: 1;
+    padding: 0 1rem;
+  }
+
+   
+  #sidebar-toc {
+    position: fixed;
+    top: 11%;
+    right: 20%;
+    width: 260px;
+    background-color: rgba(25, 25, 25, 0.95);
+    border-radius: 12px;
+    padding: 15px 20px;
+    color: #fff;
+    font-size: 14px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    transition: all 0.3s ease;
+  }
+
+   
+  .sidebar-title {
+    font-weight: bold;
+    color: #00bfff;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+   
+  #toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #toc-list li {
+    margin: 5px 0;
+  }
+
+  #toc-list li.h2 {
+    margin-left: 10px;
+    font-size: 13px;
+  }
+
+  #toc-list li.h3 {
+    margin-left: 20px;
+    font-size: 12px;
+  }
+
+  #toc-list a {
+    color: #9ad0ff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  #toc-list a:hover {
+    color: #00bfff;
+  }
+
+   
+
+   
+  @media (max-width: 1700px) {
+    #sidebar-toc {
+      right: 15%;
+      width: 220px;
+      font-size: 13px;
+    }
+  }
+
+   
+  @media (max-width: 1440px) {
+
+    .post-container {
+      justify-content: center;
+    }
+
+    #sidebar-toc {
+      position: fixed;
+      top: auto;
+      bottom: 20px;
+      right: 10%;
+      width: auto;
+      padding: 10px 14px;
+      background-color: rgba(0, 0, 0, 0.8);
+      border-radius: 8px;
+      font-size: 13px;
+      max-height: none;
+      overflow: visible;
+      cursor: pointer;
+    }
+
+    #sidebar-toc::after {
+      content: "☰ Contenido";
+      color: #00bfff;
+      font-weight: bold;
+    }
+
+     
+    #toc-list,
+    .sidebar-title {
+      display: none;
+    }
+
+     
+    #sidebar-toc:hover #toc-list {
+      display: block;
+      position: absolute;
+      right: 0;
+      bottom: 40px;
+      width: 220px;
+      background-color: rgba(25, 25, 25, 0.95);
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    #sidebar-toc:hover .sidebar-title {
+      display: block;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+  }
+</style>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const content = document.querySelector(".post-content");
+    const tocList = document.getElementById("toc-list");
+    if (!content || !tocList) return;
+
+    const headings = content.querySelectorAll("h1, h2, h3");
+    headings.forEach((heading, index) => {
+      const id = heading.id || `section-${index}`;
+      heading.id = id;
+
+      const li = document.createElement("li");
+      li.classList.add(heading.tagName.toLowerCase());
+
+      const a = document.createElement("a");
+      a.href = `#${id}`;
+      a.textContent = heading.textContent;
+
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+  });
+</script>
     </main>
     
 <footer class="footer">

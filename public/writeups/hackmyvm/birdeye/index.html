@@ -34,6 +34,11 @@
 
 <script src="/js/main.js" defer></script>
 
+<link rel="icon" type="image/png" href="/images/logo.png">
+<link rel="apple-touch-icon" href="/images/logo.png">
+<link rel="shortcut icon" href="/images/logo.png">
+<meta name="theme-color" content="#2E3440">
+
 </head>
 <body id="top">
     <header class="header">
@@ -59,20 +64,21 @@
 </header>
 <main class="main">
 
-<article class="post-single">
-  <header class="post-header">
-    
-    <h1 class="post-title entry-hint-parent">
-      Birdeye
-    </h1>
-    <div class="post-description">
-      Writeup de la máquina Birdeye en HackMyVM.
-    </div>
-    <div class="post-meta"><span title='2025-11-03 00:00:00 +0000 UTC'>November 3, 2025</span>&nbsp;·&nbsp;<span>7 min</span>
+<div class="post-container">
+  <article class="post-single">
+    <header class="post-header">
+      
+      <h1 class="post-title entry-hint-parent">
+        Birdeye
+      </h1>
+      <div class="post-description">
+        Writeup de la máquina Birdeye en HackMyVM.
+      </div>
+      <div class="post-meta"><span title='2025-11-03 00:00:00 +0000 UTC'>November 3, 2025</span>&nbsp;·&nbsp;<span>7 min</span>
 
 </div>
-  </header> 
-  <div class="post-content"><h1 id="reconocimiento">Reconocimiento<a hidden class="anchor" aria-hidden="true" href="#reconocimiento">#</a></h1>
+    </header> 
+    <div class="post-content"><h1 id="reconocimiento">Reconocimiento<a hidden class="anchor" aria-hidden="true" href="#reconocimiento">#</a></h1>
 <p>Vamos a comenzar realizando un reconocimiento en red para encontrar a la maquina con ayuda de <strong>Arp-Scan</strong>:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>arp-scan -I ens33 --localnet --ignoredups
 </span></span></code></pre></div><p><img alt="img1" loading="lazy" src="/img/Pasted%20image%2020251022181804.png"></p>
@@ -168,16 +174,186 @@
 <p><img alt="img36" loading="lazy" src="/img/%7B0FD9303B-D1EA-4BAB-946E-5A2B9F8F00EB%7D.png"></p>
 
 
-  </div>
+    </div>
 
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="http://localhost:1313/tags/linux/">Linux</a></li>
-      <li><a href="http://localhost:1313/tags/server-side-request-forgery-ssrf/">Server-Side Request Forgery (SSRF)</a></li>
-      <li><a href="http://localhost:1313/tags/privilegios-sudo/">Privilegios Sudo</a></li>
-    </ul>
-  </footer>
-</article>
+    <footer class="post-footer">
+      <ul class="post-tags">
+        <li><a href="http://localhost:1313/tags/linux/">Linux</a></li>
+        <li><a href="http://localhost:1313/tags/server-side-request-forgery-ssrf/">Server-Side Request Forgery (SSRF)</a></li>
+        <li><a href="http://localhost:1313/tags/privilegios-sudo/">Privilegios Sudo</a></li>
+      </ul>
+    </footer>
+  </article>
+
+  
+  <aside id="sidebar-toc">
+    <div class="sidebar-title">Contenido</div>
+    <ul id="toc-list"></ul>
+  </aside>
+</div>
+
+<style>
+   
+  .post-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    position: relative;
+  }
+
+   
+  .post-single {
+    max-width: 850px;
+    flex: 1;
+    padding: 0 1rem;
+  }
+
+   
+  #sidebar-toc {
+    position: fixed;
+    top: 11%;
+    right: 20%;
+    width: 260px;
+    background-color: rgba(25, 25, 25, 0.95);
+    border-radius: 12px;
+    padding: 15px 20px;
+    color: #fff;
+    font-size: 14px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    transition: all 0.3s ease;
+  }
+
+   
+  .sidebar-title {
+    font-weight: bold;
+    color: #00bfff;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+   
+  #toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #toc-list li {
+    margin: 5px 0;
+  }
+
+  #toc-list li.h2 {
+    margin-left: 10px;
+    font-size: 13px;
+  }
+
+  #toc-list li.h3 {
+    margin-left: 20px;
+    font-size: 12px;
+  }
+
+  #toc-list a {
+    color: #9ad0ff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  #toc-list a:hover {
+    color: #00bfff;
+  }
+
+   
+
+   
+  @media (max-width: 1700px) {
+    #sidebar-toc {
+      right: 15%;
+      width: 220px;
+      font-size: 13px;
+    }
+  }
+
+   
+  @media (max-width: 1440px) {
+
+    .post-container {
+      justify-content: center;
+    }
+
+    #sidebar-toc {
+      position: fixed;
+      top: auto;
+      bottom: 20px;
+      right: 10%;
+      width: auto;
+      padding: 10px 14px;
+      background-color: rgba(0, 0, 0, 0.8);
+      border-radius: 8px;
+      font-size: 13px;
+      max-height: none;
+      overflow: visible;
+      cursor: pointer;
+    }
+
+    #sidebar-toc::after {
+      content: "☰ Contenido";
+      color: #00bfff;
+      font-weight: bold;
+    }
+
+     
+    #toc-list,
+    .sidebar-title {
+      display: none;
+    }
+
+     
+    #sidebar-toc:hover #toc-list {
+      display: block;
+      position: absolute;
+      right: 0;
+      bottom: 40px;
+      width: 220px;
+      background-color: rgba(25, 25, 25, 0.95);
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    #sidebar-toc:hover .sidebar-title {
+      display: block;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+  }
+</style>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const content = document.querySelector(".post-content");
+    const tocList = document.getElementById("toc-list");
+    if (!content || !tocList) return;
+
+    const headings = content.querySelectorAll("h1, h2, h3");
+    headings.forEach((heading, index) => {
+      const id = heading.id || `section-${index}`;
+      heading.id = id;
+
+      const li = document.createElement("li");
+      li.classList.add(heading.tagName.toLowerCase());
+
+      const a = document.createElement("a");
+      a.href = `#${id}`;
+      a.textContent = heading.textContent;
+
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+  });
+</script>
     </main>
     
 <footer class="footer">
