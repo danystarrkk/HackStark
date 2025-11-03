@@ -13,7 +13,7 @@ Vamos a comenzar realizando un reconocimiento en red para encontrar a la maquina
 arp-scan -I ens33 --localnet --ignoredups
 ```
 
-![[Pasted image 20251022181804.png]]
+[[Pasted image 20251022181804.png]]
 
 Bueno como podemos ver ya hemos identificado a la maquina victima por lo que vamos a intentar identificar el Sistema que esta corre con ayuda del comando `ping`:
 
