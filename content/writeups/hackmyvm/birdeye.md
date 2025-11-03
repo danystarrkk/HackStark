@@ -4,9 +4,11 @@ date: 2025-11-03
 draft: false
 description: "Writeup de la máquina Birdeye en HackMyVM."
 categories: ["HackMyVM"]
-tags: ["Linux", "Privilege Escalation"]
+tags: ["Linux", "Server-Side Request Forgery (SSRF)", "Privilegios Sudo"]
 image: "/images/Birdeye.png"
 ---
+
+# Reconocimiento
 
 Vamos a comenzar realizando un reconocimiento en red para encontrar a la maquina con ayuda de **Arp-Scan**:
 
@@ -16,7 +18,7 @@ arp-scan -I ens33 --localnet --ignoredups
 
 ![img1](/img/Pasted%20image%2020251022181804.png)
 
-Bueno como podemos ver ya hemos identificado a la maquina victima por lo que vamos a intentar identificar el Sistema que esta corre con ayuda del comando `ping`:
+Bueno, como podemos ver ya hemos identificado a la maquina victima por lo que vamos a intentar identificar el Sistema que esta corre con ayuda del comando `ping`:
 
 ```bash
 ping -c 1 192.168.1.129
@@ -24,7 +26,7 @@ ping -c 1 192.168.1.129
 
 ![img2](/img/Pasted%20image%2020251022181919.png)
 
-A menos de que por alguna razón este haya sido modificado podríamos intuir un sistema `Linux`, la distribución seguimos sin conocerla por el momento.
+A menos de que por alguna razón este haya sido modificado podríamos intuir un sistema `Linux` debido a su `ttl=64`, la distribución seguimos sin conocerla por el momento.
 
 En este punto vamos a realizar un escaneo con ayuda de **Nmap** para ir mirando los puertos que vemos abiertos por ahora y analizarlos a ver que podemos encontrar:
 
@@ -34,7 +36,7 @@ nmap -p- --open -sS --min-rate 5000 -n -v -Pn 192.168.1.129 -oG allPorts
 
 ![img3](/img/Pasted%20image%2020251022182404.png)
 
-Podemos observar los puertos abiertos, en este punto lo que vamos a hacer es realizar un escaneo mucho mas agresivo para obtener toda la información de estos puertos que figuran como abiertos y de igual forma aremos uso de **Nmap**:
+Podemos observar los puertos abiertos, en este punto lo que vamos a hacer es realizar un escaneo mucho más agresivo para obtener toda la información de estos puertos que figuran como abiertos y de igual forma aremos uso de **Nmap**:
 
 ```bash
 nmap -p53,80,5000 -sVC 192.168.1.129 -oN target
@@ -42,11 +44,11 @@ nmap -p53,80,5000 -sVC 192.168.1.129 -oN target
 
 ![img4](/img/Pasted%20image%2020251022182710.png)
 
-Podemos observar de forma mucho mas detallada el servicio y la version del mismo que corre en los puertos.
+Podemos observar de forma mucho más detallada el servicio y la version del mismo que corre en los puertos.
 
-Bueno vemos en si los puertos 80, 53 y 5000 abiertos donde lo que mas llama mi atención es el puerto 80 y el puerto 5000 además de que gracias a la versión del servicio `DNS` en el puerto 53 nos da indicios de ser una distribución Ubuntu.
+Bueno, vemos en sí los puertos: 80, 53 y 5000 abiertos donde lo que más llama mi atención es el puerto 80 y el puerto 5000, además de que gracias a la versión del servicio `DNS` en el puerto 53 nos da indicios de ser una distribución Ubuntu.
 
-Continuando con lo del puerto 80 y 5000 estos son servicios web por lo que vamos como primer escaneo a usar **Whatweb** para ver si identificamos las tecnologías usada:
+Continuando con lo del puerto 80 y 5000 estos son servicios web, por lo que vamos como primer escaneo a usar **Whatweb** para ver si identificamos las tecnologías usadas:
 
 ```bash
 whatweb http://192.168.1.129
@@ -54,7 +56,7 @@ whatweb http://192.168.1.129
 
 ![img5](/img/{5995BA3F-D558-4ED1-9C28-57433283EC32}.png)
 
-Perfecto, vemos que es un Apache cosa que ya nos describía también en el escaneo con nmap y vemos algunas cabeceras que podrían ser útiles dependiendo de la situación.
+Perfecto, vemos que es un Apache, cosa que ya nos describía también en el escaneo con nmap y vemos algunas cabeceras que podrían ser útiles dependiendo de la situación.
 
 Lo que vamos a hacer es lo mismo para el puerto 5000 a ver si encontramos algo:
 
@@ -64,19 +66,19 @@ whatweb http://192.168.1.129:5000
 
 ![img6](/img/Pasted%20image%2020251022183606.png)
 
-al igual nos habla de `Werkzeug` y su versión al igual que nos describe la versión de python que esta implementando, lo primero que tenemos que hacer es buscar que es so de `Werkzeug` para entender que esta pasando primero.
+Al igual nos habla de `Werkzeug` y su versión, además nos describe la versión de python que está implementando, lo primero que tenemos que hacer es buscar que es so de `Werkzeug` para entender que está pasando primero.
 
-Lo que encontramos es que `Werkzeug` es una biblioteca de python que nos permite la crear aplicaciones web compatibles con `WSGI` (Web Server Gateway Interface) que es una interfaz estándar entre servidores web y aplicaciones web en Python el cual permite que servidores como `Apache` o Nginx se comuniquen con diferentes frameworks como los Django o Flask.
+Lo que encontramos es que `Werkzeug` es una biblioteca de Python que nos permite la creación aplicaciones web compatibles con `WSGI` (Web Server Gateway Interface) que es una interfaz estándar entre servidores web y aplicaciones web en Python el cual permite que servidores como `Apache` o Nginx se comuniquen con diferentes frameworks como los Django o Flask.
 
-Bueno con esto ya podemos tener una idea de como puede estar montada la web ya que si tenemos esto corriendo podemos asumir que tenemos algún back-end en python que se esta comunicando con apache para servir la información por el puerto 80.
+Bueno con esto ya podemos tener una idea de como puede estar montada la web, porque si tenemos esto corriendo podemos asumir que tenemos algún back-end en python que se esta comunicando con apache para servir la información por el puerto 80.
 
-Vamos aver que tenemos entonces en el puerto 80:
+Vamos a ver que tenemos entonces en el puerto 80:
 
 ![img7](/img/Pasted%20image%2020251022185357.png)
 
-Bueno vemos varias opciones donde ya probamos pero no encontramos nada realmente critico por el momento.
+Bueno, vemos varias rutas que ya ingresamos pero, no encontramos nada realmente critico por el momento.
 
-Como no vemos nada por aquí vamos a intentar hacer un poco de fuzzing con `gobuster` para encontrar directorios en la web. Recordemos que en el puerto 5000 aunque vemos la tecnología no se observaremos nada en absoluto, entonces continuemos con el fuzzing:
+Como no vemos nada por aquí vamos a intentar hacer un poco de fuzzing con `gobuster` para encontrar directorios en la web. Recordemos que en el puerto 5000, aunque vemos la tecnología no se observará nada en absoluto, entonces continuemos con el fuzzing:
 
 ```bash
 gobuster dir -u http://192.168.1.129 -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt --add-slash -t 20
@@ -84,10 +86,10 @@ gobuster dir -u http://192.168.1.129 -w /usr/share/seclists/Discovery/Web-Conten
 
 ![img8](/img/Pasted%20image%2020251022185749.png)
 
-vemos que tenemos una ruta `admin` la cual aunque no es accesible podríamos tener algo dentro, así que vamos a intentar ver dentro de la misma:
+Vemos que tenemos una ruta `admin` la cual aunque no es accesible podríamos tener algo dentro, así que vamos a intentar ver dentro de la misma:
 ![img9](/img/{B11DB4AE-97BA-4514-AF36-21D33FB1837A}.png)
 
-Vemos un error al intentarlo de primeras pero si lo leemos vamos a ver que nos habla de que al parecer no nos admite peticiones largas y nos dice que las limitemos directamente a `22` vamos a hacerlo y ahora si el comando sería:
+Vemos un error al intentarlo de primeras, pero si lo leemos vamos a ver que nos habla de que al parecer no nos admite peticiones largas y nos dice que las limitemos directamente a `22` vamos a hacerlo y ahora si el comando sería:
 
 ```bash
 gobuster dir -u http://192.168.1.129/admin -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt --add-slash -t 20 -xl 22
@@ -95,76 +97,80 @@ gobuster dir -u http://192.168.1.129/admin -w /usr/share/seclists/Discovery/Web-
 
 ![img10](/img/Pasted%20image%2020251023162240.png)
 
-vemos que nos redirige a un `/config` pero que no es accesible, en este punto vamos a navegar en toda la web y realizar diferentes que tenga la web capturando claro todo el trafico mediante el Burpsuite:
+Vemos que nos redirige a un `/config`, pero que no es accesible, en este punto vamos a navegar en toda la web y realizar diferentes que tenga la web capturando claro todo el trafico mediante el Burp Suite:
 ![img11](/img/{632ACBF9-D02D-439F-8AEF-773CBBE18A5A}.png)
 
-vemos esta petición que es en el apartado de búsqueda y vemos que al parámetro `url` le estamos pasando algo pero no se comprende que es, vamos a url-decode a eso a ver que es:
+Vemos esta petición que es en el apartado de búsqueda y vemos que al parámetro `url` le estamos pasando algo, pero no se comprende que es, vamos a url-decode a eso a ver que es:
 
 ![img12](/img/Pasted%20image%2020251023162803.png)
 
-Perfecto lo que vemos es que estamos haciendo una petición que podría dirigirse también de forma externa, esto no es una buena practica, vemos que pasa si desde aquí llamamos a google:
+Perfecto lo que vemos es que estamos haciendo una petición que podría dirigirse también de forma externa, esto no es una buena práctica, vemos que pasa si desde aquí llamamos a google:
 ![img13](/img/{BD51EE5B-76C7-4D56-BE66-28BE0E9841F2}.png)
 
 Nos aplica un redirect:
 
 ![img14](/img/{97931A7C-393E-493C-9465-BEB13516BB67}.png)
 
-y pues si logramos pasar a google por lo que la web realiza peticiones.
+Y pues si logramos pasar a Google por lo que la web realiza peticiones.
 
-Esto ya podemos identificarlo como un **Server-Side Request Forgery (SSRF)** donde vamos a poder talvez realizar peticiones a webs o servicios internos, en este caso recordemos que tenemos el `/admin` corriendo pero no tenemos acceso, por concepto debemos pasara debido a que la misma maquina esta haciendoce asia si misma la consulta:
+# Explotación
+
+Esto ya podemos identificarlo como un **Server-Side Request Forgery (SSRF)** donde vamos a poder tal vez realizar peticiones a webs o servicios internos, en este caso recordemos que tenemos el `/admin` corriendo, pero no tenemos acceso, por concepto debemos pasar debido a que la misma máquina está haciéndose a sí misma la consulta:
 ![img15](/img/{8F2FEF78-FB17-41F6-94CE-939615C2B43F}.png)
 
-vemos que nos aplica un follow redirect:
+Vemos que nos aplica un follow redirect:
 
 ![img16](/img/{1D5FB8FE-9337-4222-ABA2-72E432992813}.png)
 
-pero no llegamos a ningún lado.
+Pero no llegamos a ningún lado.
 
-recordemos que dentro de `/admin` encontramos otra ruta mas que es `/config` veamos si esto nos da alguna respuesta:
+Recordemos que dentro de `/admin` encontramos otra ruta mas que es `/config` veamos si esto nos da alguna respuesta:
 ![img17](/img/{15779616-E313-4A4B-A605-73E57308D0ED}.png)
 
-Perfecto el servidor nos acaba de responder y lo que vemos son credenciales de adminitrador, además de que nos indica que en `/admin/panelloginpage` esta el panel de administración por lo que vamos a intentar entrar y ver que es y las credenciales que nos da las vamos a guardar `superadmin:SuperSecret123!`:
+!Perfecto el servidor nos acaba de responder y lo que vemos son credenciales de administrador, además de que nos indica que en `/admin/panelloginpage` esta el panel de administración por lo que vamos a intentar entrar y ver que es y las credenciales que nos da las vamos a guardar `superadmin:SuperSecret123!`:
 
 ![img18](/img/{197736D1-7EE2-41F1-8BB4-5595F0BDACC7}.png)
 
-vemos un panel administrativo.
+Vemos un panel administrativo.
 
 ![img19](/img/Pasted%20image%2020251023163842.png)
 
-de igual forma revisando la respuesta lo que vemos es que podemos emplear 3 tipos de métodos, pero si bajamos y revisamos el código del formulario:
+De igual forma revisando la respuesta lo que vemos es que podemos emplear 3 tipos de métodos, pero si bajamos y revisamos el código del formulario:
 ![img20](/img/{0E646776-FBB6-4BA9-8157-59861C870012}.png)
 
-como vemos emplea post por lo cual vamos a tener que usarlo de la siguiente manera:
+Como vemos emplea el método `POST` por lo cual vamos a tener que usarlo de la siguiente manera:
 
 ![img21](/img/Pasted%20image%2020251023170305.png)
 
-Todo lo que vemos en la imagen es lo agregado o modificado que nos ayuda a completar correctamente la petición, en este punto lo que vamos a hacer es llevarnos la cookie de sesión que nos responde la web y dirigirnos directamente a `admin` pero si observamos bien vamos a ver que el titulo de la web es `Dashboard` podemos intentar en caso de no funcionar ir a `/admin/Dashboard` a ver que obtenemos:
+Todo lo que vemos en la imagen es lo agregado o modificado que nos ayuda a completar correctamente la petición, en este punto lo que vamos a hacer es llevarnos la cookie de sesión que nos responde la web y dirigirnos directamente a `admin`, pero si observamos bien veremos que el título de la web es `Dashboard` podemos intentar en caso de no funcionar ir a `/admin/Dashboard` a ver que obtenemos:
 
 ![img22](/img/{59B077A5-8E5D-410F-8E49-024131A3D666}.png)
 
-vemos que el `/admin/dashboard` es el valido, además de que la petición gracias a la cookie que tenemos ya podemos hacerla de forma directa.
+Vemos que el `/admin/dashboard` es el válido, además de que la petición gracias a la cookie que tenemos ya podemos hacerla de forma directa.
 
 En este punto por alguna razón tenemos una ejecución remota de comandos, vamos a realizar en este punto algo sencillo que es generar una reverse shell para mayor comodidad:
 
 ![img23](/img/Pasted%20image%2020251023185645.png)
 
-vemos un pequeño problema en este caso y es que nos esta impidiendo algunas ejecuciones de comandos por lo que nos impide en si cualquier tipo de reverse shell, pero aquí vamos a hacer uso de un binario llamado `busybox` el cual es un software especialmente usado en sistema embevidos que permite la ejecución de ciertos comandos básicos de Unix, el echo de nosotros mediante este binario podamos realizar una ejecución de comandos es que no hace de intermediario y lanza el binario de `ls` sino que dentro de el binario de `busybox` tiene por decirlo de alguna forma una función propia de ls que hace los mismo y es por eso que permite la ejecución de ciertos comandos y con su ayuda vamos a generar la reverse shell:
+vemos un pequeño problema en este caso y es que nos está impidiendo algunas ejecuciones de comandos por lo que nos impide en sí cualquier tipo de reverse shell, pero aquí vamos a hacer uso de un binario llamado `busybox` el cual es un software especialmente usado en sistema embevidos que permite la ejecución de ciertos comandos básicos de Unix, el hecho de nosotros mediante este binario podamos realizar una ejecución de comandos es que no hace de intermediario y lanza el binario de `ls`, sino que dentro del binario de `busybox` tiene por decirlo de alguna forma una función propia de ls que hace los mismo y es por eso que permite la ejecución de ciertos comandos y con su ayuda vamos a generar la reverse shell:
 
 ![img24](/img/Pasted%20image%2020251023191653.png)
+
+# Escalada de Privilegios
 
 Perfecto ya estamos dentro, lo que vamos a hacer ahora es un pequeño tratamiento a la terminal para manejarla mejor:
 
 ![img25](/img/Pasted%20image%2020251023191807.png)
 ![img26](/img/Pasted%20image%2020251023191827.png)
 
-Perfecto ahora lo que vamos a hacer es buscar en el sistema por otros usuarios:
+Perfecto, ahora lo que vamos a hacer es buscar en el sistema por otros usuarios:
 ![img27](/img/{C3FB1DB5-BAEB-4108-BAB1-8CDBE2A1A590}.png)
 
-vemos en `/home` una carpeta con nombre `sev` esto nos indica un posible usuario, podemos listar también el `/etc/passwd` a ver si lo confirmamos:
+Vemos en `/home` una carpeta con nombre `sev` esto nos indica un posible usuario, podemos listar también el `/etc/passwd` a ver si lo confirmamos:
 
 ![img28](/img/{D9C785A4-A029-4D6A-AA71-A15466E2F221}.png)
 
-efectivamente tenemos al usuario `sev y root` no tenemos nada mas, podemos ver con `sudo -l` que permisos de ejecución como sudo tenemos:
+Efectivamente tenemos al usuario `sev y root` no tenemos nada más, podemos ver con `sudo -l` que permisos de ejecución como sudo tenemos:
 ![img29](/img/{F3A7BCFB-C2F5-465A-A78C-DA9C44251CB6}.png)
 
 Perfecto en este punto lo que podemos hacer es intentar ejecutar ese script como sudo como `sev` de la siguiente manera:
@@ -179,14 +185,14 @@ Perfecto, vamos a ver la flag y a volver a listar los permisos de sudo:
 
 ![img31](/img/{6248D655-2335-4497-B649-3993A29DF75A}.png)
 
-volvemos a observar que podemos usar el comando find, este no es algo que sepamos usar pero podemos ayudarnos de web como GTOBINS a ver que podemos obtener:
+Volvemos a observar que podemos usar el comando find, este no es algo que sepamos usar, pero podemos ayudarnos de web como GTOBINS a ver que podemos obtener:
 ![img32](/img/Pasted%20image%2020251023192740.png)
 
-si tenemos resultado y además si tenemos forma de aprovecharnos de el que se tenga permisos de sudo, vamos ver que podemos hacer:
+Si tenemos resultado y además si tenemos forma de aprovecharnos del que tenga permisos de sudo, vamos a ver que podemos hacer:
 
 ![img33](/img/{398B799A-CB54-4986-8184-D5B0EFD65D61}.png)
 
-Como vemos ya nos dan directamente el comando, en mi caso solo modificare una pequeña cosa y es que quiero que sea una `bash` y no una `sh` por lo tanto vamos a intentarlo:
+Como vemos ya nos dan directamente el comando, en mi caso solo modificaré una pequeña cosa y es que quiero que sea una `bash` y no una `sh`, por lo tanto vamos a intentarlo:
 
 ![img34](/img/{59DC19DD-1C5D-45A7-8BEF-F9D9E55B4CF6}.png)
 
@@ -194,6 +200,6 @@ Excelente ya estamos como usuario root, vamos a intentar en este punto ya obtene
 
 ![img35](/img/{5542378E-1BD2-4307-B5C3-C579672A66B1}.png)
 
-Excelente, vamos a intentar mandarle ya la ultima flag a Hackmyvm.
+Excelente, vamos a intentar mandarle ya la última flag a Hackmyvm.
 
 ![img36](/img/{0FD9303B-D1EA-4BAB-946E-5A2B9F8F00EB}.png)
