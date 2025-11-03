@@ -1,4 +1,4 @@
-baseURL = "https://hackstark.github.io/"
+baseURL = "https://hackstark.netlify.app/"
 languageCode = "es"
 title = "Hack Stark ×͜×"
 theme = "PaperMod"
