@@ -5,6 +5,9 @@
     <loc>http://localhost:1313/writeups/hackmyvm/</loc>
     <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/writeups/vulnhub/</loc>
+    <lastmod>2025-11-03T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/writeups/hackmyvm/birdeye/</loc>
     <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url><url>
@@ -32,9 +35,16 @@
     <loc>http://localhost:1313/writeups/hackmyvm/silentdev/</loc>
     <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/writeups/vulnhub/symfonos6/</loc>
+    <lastmod>2025-11-03T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/tags/</loc>
     <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/writeups/vulnhub/</loc>
+    <loc>http://localhost:1313/categories/vulnhub/</loc>
+    <lastmod>2025-11-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/wildcard-injection/</loc>
+    <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url>
 </urlset>

