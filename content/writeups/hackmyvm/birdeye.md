@@ -4,7 +4,7 @@ date: 2025-11-03
 draft: false
 description: "Writeup de la máquina Birdeye en HackMyVM."
 categories: ["HackMyVM"]
-tags: ["Linux", "Server-Side Request Forgery (SSRF)", "Privilegios Sudo"]
+tags: ["linux", "server-side-request-forgery(ssrf)", "sudo-privilege", "web-enumeration", "remote-command-execution"]
 image: "/images/Birdeye.png"
 ---
 
@@ -152,7 +152,7 @@ En este punto por alguna razón tenemos una ejecución remota de comandos, vamos
 
 ![img23](/img/Pasted%20image%2020251023185645.png)
 
-vemos un pequeño problema en este caso y es que nos está impidiendo algunas ejecuciones de comandos por lo que nos impide en sí cualquier tipo de reverse shell, pero aquí vamos a hacer uso de un binario llamado `busybox` el cual es un software especialmente usado en sistema embevidos que permite la ejecución de ciertos comandos básicos de Unix, el hecho de nosotros mediante este binario podamos realizar una ejecución de comandos es que no hace de intermediario y lanza el binario de `ls`, sino que dentro del binario de `busybox` tiene por decirlo de alguna forma una función propia de ls que hace los mismo y es por eso que permite la ejecución de ciertos comandos y con su ayuda vamos a generar la reverse shell:
+vemos un pequeño problema en este caso y es que nos está impidiendo algunas ejecuciones de comandos por lo que nos impide en sí cualquier tipo de reverse shell, pero aquí vamos a hacer uso de un binario llamado `busybox` el cual es un software especialmente usado en sistema embebidos que permite la ejecución de ciertos comandos básicos de Unix, el hecho de nosotros mediante este binario podamos realizar una ejecución de comandos es que no hace de intermediario y lanza el binario de `ls`, sino que dentro del binario de `busybox` tiene por decirlo de alguna forma una función propia de ls que hace los mismo y es por eso que permite la ejecución de ciertos comandos y con su ayuda vamos a generar la reverse shell:
 
 ![img24](/img/Pasted%20image%2020251023191653.png)
 

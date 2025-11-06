@@ -4,7 +4,7 @@ date: 2025-11-03
 draft: false
 description: "Writeup de la máquina SilentDev en HackMyVM."
 categories: ["HackMyVM"]
-tags: ["Linux", "Local File Inclusion (LFI)", "Wildcard Injection"]
+tags: ["linux", "file-upload-vulnerability", "remote-code-execution", "web-enumeration", "wildcard-injection"]
 image: "/images/silentdev.png"
 ---
 
