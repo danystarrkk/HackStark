@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto" data-theme="dark">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <title>Birdeye | Hack Stark ×͜×</title>
 <meta name="keywords" content="linux, server-side-request-forgery(ssrf), sudo-privilege, web-enumeration, remote-command-execution">
 <meta name="description" content="Writeup de la máquina Birdeye en HackMyVM.">
 <meta name="author" content="">
-<link rel="canonical" href="https://hackstark.netlify.app/writeups/hackmyvm/birdeye/">
+<link rel="canonical" href="http://localhost:1313/writeups/hackmyvm/birdeye/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fd5566c526ae48aadabd950798a2dc3568536401560eae5caac3765a42a9e7b5.css" integrity="sha256-/VVmxSauSKravZUHmKLcNWhTZAFWDq5cqsN2WkKp57U=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://hackstark.netlify.app/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://hackstark.netlify.app/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://hackstark.netlify.app/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://hackstark.netlify.app/apple-touch-icon.png">
-<link rel="mask-icon" href="https://hackstark.netlify.app/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://hackstark.netlify.app/writeups/hackmyvm/birdeye/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/writeups/hackmyvm/birdeye/">
 <noscript>
     <style>
         #theme-toggle,
@@ -38,97 +38,24 @@
 <link rel="apple-touch-icon" href="/images/logo.png">
 <link rel="shortcut icon" href="/images/logo.png">
 <meta name="theme-color" content="#2E3440">
-<meta property="og:url" content="https://hackstark.netlify.app/writeups/hackmyvm/birdeye/">
-  <meta property="og:site_name" content="Hack Stark ×͜×">
-  <meta property="og:title" content="Birdeye">
-  <meta property="og:description" content="Writeup de la máquina Birdeye en HackMyVM.">
-  <meta property="og:locale" content="es">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="writeups">
-    <meta property="article:published_time" content="2025-11-03T00:00:00+00:00">
-    <meta property="article:modified_time" content="2025-11-03T00:00:00+00:00">
-    <meta property="article:tag" content="Linux">
-    <meta property="article:tag" content="Server-Side-Request-Forgery(ssrf)">
-    <meta property="article:tag" content="Sudo-Privilege">
-    <meta property="article:tag" content="Web-Enumeration">
-    <meta property="article:tag" content="Remote-Command-Execution">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Birdeye">
-<meta name="twitter:description" content="Writeup de la máquina Birdeye en HackMyVM.">
 
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Writeups",
-      "item": "https://hackstark.netlify.app/writeups/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "",
-      "item": "https://hackstark.netlify.app/writeups/hackmyvm/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  3 ,
-      "name": "Birdeye",
-      "item": "https://hackstark.netlify.app/writeups/hackmyvm/birdeye/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Birdeye",
-  "name": "Birdeye",
-  "description": "Writeup de la máquina Birdeye en HackMyVM.",
-  "keywords": [
-    "linux", "server-side-request-forgery(ssrf)", "sudo-privilege", "web-enumeration", "remote-command-execution"
-  ],
-  "articleBody": "Reconocimiento Vamos a comenzar realizando un reconocimiento en red para encontrar a la maquina con ayuda de Arp-Scan:\narp-scan -I ens33 --localnet --ignoredups Bueno, como podemos ver ya hemos identificado a la maquina victima por lo que vamos a intentar identificar el Sistema que esta corre con ayuda del comando ping:\nping -c 1 192.168.1.129 A menos de que por alguna razón este haya sido modificado podríamos intuir un sistema Linux debido a su ttl=64, la distribución seguimos sin conocerla por el momento.\nEn este punto vamos a realizar un escaneo con ayuda de Nmap para ir mirando los puertos que vemos abiertos por ahora y analizarlos a ver que podemos encontrar:\nnmap -p- --open -sS --min-rate 5000 -n -v -Pn 192.168.1.129 -oG allPorts Podemos observar los puertos abiertos, en este punto lo que vamos a hacer es realizar un escaneo mucho más agresivo para obtener toda la información de estos puertos que figuran como abiertos y de igual forma aremos uso de Nmap:\nnmap -p53,80,5000 -sVC 192.168.1.129 -oN target Podemos observar de forma mucho más detallada el servicio y la version del mismo que corre en los puertos.\nBueno, vemos en sí los puertos: 80, 53 y 5000 abiertos donde lo que más llama mi atención es el puerto 80 y el puerto 5000, además de que gracias a la versión del servicio DNS en el puerto 53 nos da indicios de ser una distribución Ubuntu.\nContinuando con lo del puerto 80 y 5000 estos son servicios web, por lo que vamos como primer escaneo a usar Whatweb para ver si identificamos las tecnologías usadas:\nwhatweb http://192.168.1.129 Perfecto, vemos que es un Apache, cosa que ya nos describía también en el escaneo con nmap y vemos algunas cabeceras que podrían ser útiles dependiendo de la situación.\nLo que vamos a hacer es lo mismo para el puerto 5000 a ver si encontramos algo:\nwhatweb http://192.168.1.129:5000 Al igual nos habla de Werkzeug y su versión, además nos describe la versión de python que está implementando, lo primero que tenemos que hacer es buscar que es so de Werkzeug para entender que está pasando primero.\nLo que encontramos es que Werkzeug es una biblioteca de Python que nos permite la creación aplicaciones web compatibles con WSGI (Web Server Gateway Interface) que es una interfaz estándar entre servidores web y aplicaciones web en Python el cual permite que servidores como Apache o Nginx se comuniquen con diferentes frameworks como los Django o Flask.\nBueno con esto ya podemos tener una idea de como puede estar montada la web, porque si tenemos esto corriendo podemos asumir que tenemos algún back-end en python que se esta comunicando con apache para servir la información por el puerto 80.\nVamos a ver que tenemos entonces en el puerto 80:\nBueno, vemos varias rutas que ya ingresamos pero, no encontramos nada realmente critico por el momento.\nComo no vemos nada por aquí vamos a intentar hacer un poco de fuzzing con gobuster para encontrar directorios en la web. Recordemos que en el puerto 5000, aunque vemos la tecnología no se observará nada en absoluto, entonces continuemos con el fuzzing:\ngobuster dir -u http://192.168.1.129 -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt --add-slash -t 20 Vemos que tenemos una ruta admin la cual aunque no es accesible podríamos tener algo dentro, así que vamos a intentar ver dentro de la misma: Vemos un error al intentarlo de primeras, pero si lo leemos vamos a ver que nos habla de que al parecer no nos admite peticiones largas y nos dice que las limitemos directamente a 22 vamos a hacerlo y ahora si el comando sería:\ngobuster dir -u http://192.168.1.129/admin -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt --add-slash -t 20 -xl 22 Vemos que nos redirige a un /config, pero que no es accesible, en este punto vamos a navegar en toda la web y realizar diferentes que tenga la web capturando claro todo el trafico mediante el Burp Suite: Vemos esta petición que es en el apartado de búsqueda y vemos que al parámetro url le estamos pasando algo, pero no se comprende que es, vamos a url-decode a eso a ver que es:\nPerfecto lo que vemos es que estamos haciendo una petición que podría dirigirse también de forma externa, esto no es una buena práctica, vemos que pasa si desde aquí llamamos a google: Nos aplica un redirect:\nY pues si logramos pasar a Google por lo que la web realiza peticiones.\nExplotación Esto ya podemos identificarlo como un Server-Side Request Forgery (SSRF) donde vamos a poder tal vez realizar peticiones a webs o servicios internos, en este caso recordemos que tenemos el /admin corriendo, pero no tenemos acceso, por concepto debemos pasar debido a que la misma máquina está haciéndose a sí misma la consulta: Vemos que nos aplica un follow redirect:\nPero no llegamos a ningún lado.\nRecordemos que dentro de /admin encontramos otra ruta mas que es /config veamos si esto nos da alguna respuesta: !Perfecto el servidor nos acaba de responder y lo que vemos son credenciales de administrador, además de que nos indica que en /admin/panelloginpage esta el panel de administración por lo que vamos a intentar entrar y ver que es y las credenciales que nos da las vamos a guardar superadmin:SuperSecret123!:\nVemos un panel administrativo.\nDe igual forma revisando la respuesta lo que vemos es que podemos emplear 3 tipos de métodos, pero si bajamos y revisamos el código del formulario: Como vemos emplea el método POST por lo cual vamos a tener que usarlo de la siguiente manera:\nTodo lo que vemos en la imagen es lo agregado o modificado que nos ayuda a completar correctamente la petición, en este punto lo que vamos a hacer es llevarnos la cookie de sesión que nos responde la web y dirigirnos directamente a admin, pero si observamos bien veremos que el título de la web es Dashboard podemos intentar en caso de no funcionar ir a /admin/Dashboard a ver que obtenemos:\nVemos que el /admin/dashboard es el válido, además de que la petición gracias a la cookie que tenemos ya podemos hacerla de forma directa.\nEn este punto por alguna razón tenemos una ejecución remota de comandos, vamos a realizar en este punto algo sencillo que es generar una reverse shell para mayor comodidad:\nvemos un pequeño problema en este caso y es que nos está impidiendo algunas ejecuciones de comandos por lo que nos impide en sí cualquier tipo de reverse shell, pero aquí vamos a hacer uso de un binario llamado busybox el cual es un software especialmente usado en sistema embebidos que permite la ejecución de ciertos comandos básicos de Unix, el hecho de nosotros mediante este binario podamos realizar una ejecución de comandos es que no hace de intermediario y lanza el binario de ls, sino que dentro del binario de busybox tiene por decirlo de alguna forma una función propia de ls que hace los mismo y es por eso que permite la ejecución de ciertos comandos y con su ayuda vamos a generar la reverse shell:\nEscalada de Privilegios Perfecto ya estamos dentro, lo que vamos a hacer ahora es un pequeño tratamiento a la terminal para manejarla mejor:\nPerfecto, ahora lo que vamos a hacer es buscar en el sistema por otros usuarios: Vemos en /home una carpeta con nombre sev esto nos indica un posible usuario, podemos listar también el /etc/passwd a ver si lo confirmamos:\nEfectivamente tenemos al usuario sev y root no tenemos nada más, podemos ver con sudo -l que permisos de ejecución como sudo tenemos: Perfecto en este punto lo que podemos hacer es intentar ejecutar ese script como sudo como sev de la siguiente manera:\nsudo -u se /home/sev/backup_app.sh Perfecto, vamos a ver la flag y a volver a listar los permisos de sudo:\nVolvemos a observar que podemos usar el comando find, este no es algo que sepamos usar, pero podemos ayudarnos de web como GTOBINS a ver que podemos obtener: Si tenemos resultado y además si tenemos forma de aprovecharnos del que tenga permisos de sudo, vamos a ver que podemos hacer:\nComo vemos ya nos dan directamente el comando, en mi caso solo modificaré una pequeña cosa y es que quiero que sea una bash y no una sh, por lo tanto vamos a intentarlo:\nExcelente ya estamos como usuario root, vamos a intentar en este punto ya obtener la flag de root:\nExcelente, vamos a intentar mandarle ya la última flag a Hackmyvm.\n",
-  "wordCount" : "1409",
-  "inLanguage": "en",
-  "datePublished": "2025-11-03T00:00:00Z",
-  "dateModified": "2025-11-03T00:00:00Z",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://hackstark.netlify.app/writeups/hackmyvm/birdeye/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Hack Stark ×͜×",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://hackstark.netlify.app/favicon.ico"
-    }
-  }
-}
-</script>
 </head>
 <body id="top">
     <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://hackstark.netlify.app/" accesskey="h" title="Hack Stark ×͜× (Alt + H)">Hack Stark ×͜×</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Hack Stark ×͜× (Alt + H)">Hack Stark ×͜×</a>
             <div class="logo-switches">
             </div>
         </div>
         <ul id="menu">
             <li>
-                <a href="https://hackstark.netlify.app/" title="Home">
+                <a href="http://localhost:1313/" title="Home">
                     <span>Home</span>
                 </a>
             </li>
             <li>
-                <a href="https://hackstark.netlify.app/writeups/" title="WriteUps">
+                <a href="http://localhost:1313/writeups/" title="WriteUps">
                     <span>WriteUps</span>
                 </a>
             </li>
@@ -251,11 +178,11 @@
 
     <footer class="post-footer">
       <ul class="post-tags">
-        <li><a href="https://hackstark.netlify.app/tags/linux/">Linux</a></li>
-        <li><a href="https://hackstark.netlify.app/tags/server-side-request-forgeryssrf/">Server-Side-Request-Forgery(ssrf)</a></li>
-        <li><a href="https://hackstark.netlify.app/tags/sudo-privilege/">Sudo-Privilege</a></li>
-        <li><a href="https://hackstark.netlify.app/tags/web-enumeration/">Web-Enumeration</a></li>
-        <li><a href="https://hackstark.netlify.app/tags/remote-command-execution/">Remote-Command-Execution</a></li>
+        <li><a href="http://localhost:1313/tags/linux/">Linux</a></li>
+        <li><a href="http://localhost:1313/tags/server-side-request-forgeryssrf/">Server-Side-Request-Forgery(ssrf)</a></li>
+        <li><a href="http://localhost:1313/tags/sudo-privilege/">Sudo-Privilege</a></li>
+        <li><a href="http://localhost:1313/tags/web-enumeration/">Web-Enumeration</a></li>
+        <li><a href="http://localhost:1313/tags/remote-command-execution/">Remote-Command-Execution</a></li>
       </ul>
     </footer>
   </article>
@@ -432,7 +359,7 @@
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="https://hackstark.netlify.app/">Hack Stark ×͜×</a></span> · 
+        <span>&copy; 2025 <a href="http://localhost:1313/">Hack Stark ×͜×</a></span> · 
 
     <span>
         Powered by

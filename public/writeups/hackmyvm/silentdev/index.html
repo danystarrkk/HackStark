@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto" data-theme="dark">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <title>SilentDev | Hack Stark ×͜×</title>
 <meta name="keywords" content="linux, file-upload-vulnerability, remote-code-execution, web-enumeration, wildcard-injection">
 <meta name="description" content="Writeup de la máquina SilentDev en HackMyVM.">
 <meta name="author" content="">
-<link rel="canonical" href="https://hackstark.netlify.app/writeups/hackmyvm/silentdev/">
+<link rel="canonical" href="http://localhost:1313/writeups/hackmyvm/silentdev/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fd5566c526ae48aadabd950798a2dc3568536401560eae5caac3765a42a9e7b5.css" integrity="sha256-/VVmxSauSKravZUHmKLcNWhTZAFWDq5cqsN2WkKp57U=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://hackstark.netlify.app/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://hackstark.netlify.app/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://hackstark.netlify.app/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://hackstark.netlify.app/apple-touch-icon.png">
-<link rel="mask-icon" href="https://hackstark.netlify.app/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://hackstark.netlify.app/writeups/hackmyvm/silentdev/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/writeups/hackmyvm/silentdev/">
 <noscript>
     <style>
         #theme-toggle,
@@ -38,97 +38,24 @@
 <link rel="apple-touch-icon" href="/images/logo.png">
 <link rel="shortcut icon" href="/images/logo.png">
 <meta name="theme-color" content="#2E3440">
-<meta property="og:url" content="https://hackstark.netlify.app/writeups/hackmyvm/silentdev/">
-  <meta property="og:site_name" content="Hack Stark ×͜×">
-  <meta property="og:title" content="SilentDev">
-  <meta property="og:description" content="Writeup de la máquina SilentDev en HackMyVM.">
-  <meta property="og:locale" content="es">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="writeups">
-    <meta property="article:published_time" content="2025-11-03T00:00:00+00:00">
-    <meta property="article:modified_time" content="2025-11-03T00:00:00+00:00">
-    <meta property="article:tag" content="Linux">
-    <meta property="article:tag" content="File-Upload-Vulnerability">
-    <meta property="article:tag" content="Remote-Code-Execution">
-    <meta property="article:tag" content="Web-Enumeration">
-    <meta property="article:tag" content="Wildcard-Injection">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SilentDev">
-<meta name="twitter:description" content="Writeup de la máquina SilentDev en HackMyVM.">
 
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Writeups",
-      "item": "https://hackstark.netlify.app/writeups/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "",
-      "item": "https://hackstark.netlify.app/writeups/hackmyvm/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  3 ,
-      "name": "SilentDev",
-      "item": "https://hackstark.netlify.app/writeups/hackmyvm/silentdev/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "SilentDev",
-  "name": "SilentDev",
-  "description": "Writeup de la máquina SilentDev en HackMyVM.",
-  "keywords": [
-    "linux", "file-upload-vulnerability", "remote-code-execution", "web-enumeration", "wildcard-injection"
-  ],
-  "articleBody": "Reconocimiento Bueno, vamos a comenzar identificando la IP de la máquina con ayuda de Arp-Scan de la siguiente manera:\narp-scan -I ens33 --localnet --ignoredups Como podemos observar nuestra máquina víctima tiene la IP 192.168.1.70, ahora vamos con ayuda del comando ping a tratar de identificar el sistema operativo:\nping -c 1 192.168.1.70 Como podemos observar tenemos un ttl=64 donde intuimos un sistema operativo Linux.\nEn este momento ya vamos a realizar un escaneo con Nmap con el objetivo de identificar puertos abiertos primero:\nnmap -p- --open -sS --min-rate 5000 -n -v -Pn 192.168.1.70 -oG allPorts Como podemos observar detectamos los puertos 80 y 22 abiertos, ahora mediante otro escaneo de Nmap vamos a intentar identificar versiones lanzando algunos scripts básicos de reconocimiento un poco de información:\nnmap -p22,80 -sCV 192.168.1.70 -oN target Podemos observar que nos da las versiones de los servicios y mediante la misma ya nos dice que es un Debian, también con esta versión y una búsqueda con launchpad podríamos determinar el codename: En este caso no logramos identificarlo, pero abra casos en los que sí.\nContinuando con la máquina podemos visitar la web alojada en el puerto 80 para ver que podemos encontrar:\nVemos que solo tiene ese apartado para subir archivos, Podemos utilizar diferentes herramientas para identificar las tecnologías de la web, en este caso vamos a hacer los Whatweb y la extensión de Wappalizer:\nwhatweb http://192.168.1.70 En sentido de tecnologías no vemos nada en especial.\nBueno para probar vamos a subir una imagen y ver que sucede:\nVemos que al subir nos da una especie de error que nos dice que solo podemos subir imágenes, aunque lo que subimos sí lo fue. Algo que podemos notar en la URL es que tiene la extensión .php esto ya nos dice que la web puede interpretar este código.\nSi revisamos nuevamente el wappalizer vamos a ver que ya nos detecta php como lenguaje: Ahora que conocemos esto, vamos a enviar un archivo malicioso que contenga código para ejecutar comandos con php.\nExplotación Vamos a crear el archivo cmd.php con el siguiente contenido:\nLo que vamos a hacer es subirlo, pero esa petición la vamos a capturar con ayuda de Burp Suite y la vamos a mandar al repeater para poder analizarla:\nComo podemos observar ya con la petición en el repeater y enviada vemos que nos da un mensaje de que solo son permitidas las imágenes, en esta ocasión al parecer la verificación del archivo se usa el contenido de la cabecera Content-Type por lo que vamos a modificarlo para que aparente una imagen y ver si nos permite subir el archivo:\nPodemos observar como modificamos la cabecera y en la respuesta ya nos dice que se subió y se encuentra en uploads/cmd.php, recordemos que este es un archivo malicioso el cual se le debe pasar un parámetro por lo que para ingresar correctamente tenemos que hacerlos de la siguiente manera /uploads/cmd.php?cmd=:\nComo podemos observar logramos la ejecución del comando whoami por lo que ya tenemos una forma de ejecutar comandos en el servidor.\nAhora que podemos ejecutar comandos, lo que vamos a hacer es ejecutar una reverse shell para controlar todo desde consola.\nPrimero vamos a dejar el puerto 443 de nuestra máquina atacante en escucha:\nnc -nlvp 443 Ya con el puerto en escucha vamos a enviar la revese shell de la siguiente manera:\nComo vemos enviamos la reverse shell y ya deberíamos ver la conexión en nuestra consola:\nEscalada de Privilegios Podemos observar ya solo vamos a encargarnos de dar el tratamiento a la consola:\nscrip /dev/null -c bash ctrl + z stty raw -echo;fg reset xterm Por último ya con la nueva consola exportamos xterm para el funcionamiento de comandos básicos como ctrl + c o ctrl + l: En este punto vamos a realizar un reconocimiento para archivos SUI:\nfind / -perm -4000 2\u003e/dev/null No vemos nada especial en realidad por lo que vamos a revisar por tareas cron:\ncat /etc/crontab Tampoco vemos nada, podemos revisar otra ruta también:\nls /var/spool/cron/ Vemos una carpeta crontabs, pero no logramos acceder, ya que no tenemos permisos.\nPodemos también buscar por capabilities en el sistema:\nfind / -type f -exec getcat {} \\; 2\u003e/dev/null Bueno tampoco podemos observar nada, en este punto lo que vamos a hacer es crearnos un archivo para poder identificar comandos ejecutados en el sistema,vamos a crear el archivo procmon.sh y va a contener lo siguiente:\nBueno, con esto lo que hacemos es ver las diferencias entre en los comandos ejecutados en un bucle infinito, el propósito es ver si el comando se ejecutan en cierto tiempo.\nVamos a ejecutar nuestro script y a dejarlo corriendo hasta ver algo:\nVemos comandos que se están ejecutando, en este caso algo que llama nuestra atención es que al momento de ejecutar el binario tar está usando * en seco donde podemos hacer una wildcard injection, la base de esta vulnerabilidad es sencilla, se tiene que tener mucho cuidado con como se ejecuta estos comandos, como podemos ver el no asignar un -- para que se ejecuten opciones extras puede llevar a que si tenemos permisos en este caso dentro de /opt/project para crear archivos podríamos crear archivos que como nombre lleven indicaciones esto haciendo que el binario no los interprete como archivos, sino como opciones de comando.\nBueno, lo primero que tenemos que tener en cuenta es si tenemos permisos de crear archivos dentro de /opt/project:\nPodemos ver que pertenecemos al grupo developers el cual tiene todos los permisos dentro de /opt/project por lo que vamos primero a crear nuestro script malicioso donde se ejecutara un comando como el usuario propietario de los archivos y como no sabemos cual es este usuario ni que permisos tiene preferible vamos a generar otra reverse shell dentro del archivo shell.sh y no olvidemos darle permisos:\nAhora vamos con los siguientes comandos a crear los archivos que funcionaran como parámetros:\ntouch -- '--checkpoint=1' touch -- '--checkpoint-action=exec=sh shell.sh' Ya con esto listo vamos a dejar por el puerto 555 en espera de una conexión:\nnc -nlvp 555 Luego de un momento, si todo está correcto vamos a recibir la rever shell como el usuario development:\nComo hicimos con el anterior usuario vamos a darle tratamiento a la shell para que se pueda utilizar mucho mejor:\nscrip /dev/null -c bash ctrl + z stty raw -echo;fg reset xterm Por último exportamos xterm: Ya con esto podemos intentar ver con sudo -l que comandos podemos usar sin necesidad de pasarle contraseña:\nVemos que podemos ejecutar un script como el usuario alfonso sin necesidad de pasarle contraseña de la siguiente manera:\nsudo -u alfonso /usr/bin/sysinfo.sh como podemos observar es que al parecer nos da la opción de ejecutar los comandos df y ps el problema radica en que nos permite pasarle parámetros extra, esto nos puede permitir inyectar un segundo comando de la siguiente manera:\n; /bin/bash Como podemos observar al inyectarle ese segundo comando lo que sucede es que nos da una bash pero ahora como alfonso.\nEn este punto ya podemos ver la flag de usuario:\nPerfecto ahora podemos verificar que se puede hacer de igual forma como super usuario con sudo -l:\nVemos que tenemos en este caso un binario el cual podemos ejecutarlo con sudo (permisos de administrador):\nEn este caso al script le pasamos un usuario y al parecer nos da la línea que le corresponde del /etc/passwd.\nEn este caso es un binario y por como hace esto podemos intentar ver si está ejecutando alguno de los comandos como cat para el archivo o grep para filtrar, para esto vamos a usar el comando strings:\nstrings /user/bin/silentgets Al parecer el comando no lo tenemos. Vamos a traernos el binario a nuestra máquina para poder verlo:\nYa con esto le damos permisos de ejecución:\nVamos a ver ahora si con string las cadenas que se pueden leer y vamos a filtrar por concepto sobre cat:\nstrings binario | grep 'cat' vemos que al parecer si se usa cat pero esos @@ como que es extraño, veamos que pasa con el comando grep:\nstrings binario | grep 'grep' Como podemos observar al parecer lo que le pasamos se inserta en %s por lo que podemos intentar ingresar un comando en caso de no estar bien sanitizado: !Perfecto ya estamos como root, con esto ya podemos ver la flag del usuario root:\nCon esto tenemos terminada la máquina.\n",
-  "wordCount" : "1401",
-  "inLanguage": "en",
-  "datePublished": "2025-11-03T00:00:00Z",
-  "dateModified": "2025-11-03T00:00:00Z",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://hackstark.netlify.app/writeups/hackmyvm/silentdev/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Hack Stark ×͜×",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://hackstark.netlify.app/favicon.ico"
-    }
-  }
-}
-</script>
 </head>
 <body id="top">
     <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://hackstark.netlify.app/" accesskey="h" title="Hack Stark ×͜× (Alt + H)">Hack Stark ×͜×</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Hack Stark ×͜× (Alt + H)">Hack Stark ×͜×</a>
             <div class="logo-switches">
             </div>
         </div>
         <ul id="menu">
             <li>
-                <a href="https://hackstark.netlify.app/" title="Home">
+                <a href="http://localhost:1313/" title="Home">
                     <span>Home</span>
                 </a>
             </li>
             <li>
-                <a href="https://hackstark.netlify.app/writeups/" title="WriteUps">
+                <a href="http://localhost:1313/writeups/" title="WriteUps">
                     <span>WriteUps</span>
                 </a>
             </li>
@@ -292,11 +219,11 @@
 
     <footer class="post-footer">
       <ul class="post-tags">
-        <li><a href="https://hackstark.netlify.app/tags/linux/">Linux</a></li>
-        <li><a href="https://hackstark.netlify.app/tags/file-upload-vulnerability/">File-Upload-Vulnerability</a></li>
-        <li><a href="https://hackstark.netlify.app/tags/remote-code-execution/">Remote-Code-Execution</a></li>
-        <li><a href="https://hackstark.netlify.app/tags/web-enumeration/">Web-Enumeration</a></li>
-        <li><a href="https://hackstark.netlify.app/tags/wildcard-injection/">Wildcard-Injection</a></li>
+        <li><a href="http://localhost:1313/tags/linux/">Linux</a></li>
+        <li><a href="http://localhost:1313/tags/file-upload-vulnerability/">File-Upload-Vulnerability</a></li>
+        <li><a href="http://localhost:1313/tags/remote-code-execution/">Remote-Code-Execution</a></li>
+        <li><a href="http://localhost:1313/tags/web-enumeration/">Web-Enumeration</a></li>
+        <li><a href="http://localhost:1313/tags/wildcard-injection/">Wildcard-Injection</a></li>
       </ul>
     </footer>
   </article>
@@ -473,7 +400,7 @@
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="https://hackstark.netlify.app/">Hack Stark ×͜×</a></span> · 
+        <span>&copy; 2025 <a href="http://localhost:1313/">Hack Stark ×͜×</a></span> · 
 
     <span>
         Powered by
