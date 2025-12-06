@@ -238,3 +238,5 @@ ya podemos obtener la última flag:
 ![img32](/img/Pasted%20image%2020251126190113.png)
 
 Lab Terminado.
+
+![img1](/img/Pasted%20image%2020251205225959.png)
