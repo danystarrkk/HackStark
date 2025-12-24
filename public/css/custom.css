@@ -476,3 +476,54 @@ code .hl-command {
 .post-container {
   gap: 10px !important;
 }
+
+/* ===== Image Zoom Overlay ===== */
+.image-zoom-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.image-zoom-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.image-zoom-overlay img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+}
+
+/* Close button */
+.image-zoom-close {
+  position: absolute;
+  top: 25px;
+  right: 30px;
+  font-size: 28px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-zoom-close:hover {
+  background: rgba(255, 255, 255, 0.15);
+}

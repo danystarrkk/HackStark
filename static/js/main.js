@@ -45,3 +45,55 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const images = document.querySelectorAll(".post-content img");
+
+  if (!images.length) return;
+
+  // Crear overlay
+  const overlay = document.createElement("div");
+  overlay.className = "image-zoom-overlay";
+
+  const zoomedImg = document.createElement("img");
+
+  const closeBtn = document.createElement("div");
+  closeBtn.className = "image-zoom-close";
+  closeBtn.innerHTML = "&times;";
+
+  overlay.appendChild(zoomedImg);
+  overlay.appendChild(closeBtn);
+  document.body.appendChild(overlay);
+
+  // Abrir zoom
+  images.forEach((img) => {
+    img.style.cursor = "zoom-in";
+
+    img.addEventListener("click", () => {
+      zoomedImg.src = img.src;
+      overlay.classList.add("active");
+      document.body.style.overflow = "hidden";
+    });
+  });
+
+  // Cerrar zoom
+  function closeZoom() {
+    overlay.classList.remove("active");
+    zoomedImg.src = "";
+    document.body.style.overflow = "";
+  }
+
+  closeBtn.addEventListener("click", closeZoom);
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) {
+      closeZoom();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeZoom();
+    }
+  });
+});
