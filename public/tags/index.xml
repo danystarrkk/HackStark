@@ -4,10 +4,52 @@
     <title>Tags on Hack Stark ×͜×</title>
     <link>http://localhost:1313/tags/</link>
     <description>Recent content in Tags on Hack Stark ×͜×</description>
-    <generator>Hugo -- 0.152.2</generator>
+    <generator>Hugo -- 0.154.3</generator>
     <language>es</language>
-    <lastBuildDate>Mon, 15 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 24 Dec 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gtkwave</title>
+      <link>http://localhost:1313/tags/gtkwave/</link>
+      <pubDate>Wed, 24 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/gtkwave/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>IRC-Explotation</title>
+      <link>http://localhost:1313/tags/irc-explotation/</link>
+      <pubDate>Wed, 24 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/irc-explotation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>LFI</title>
+      <link>http://localhost:1313/tags/lfi/</link>
+      <pubDate>Wed, 24 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/lfi/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>RCE</title>
+      <link>http://localhost:1313/tags/rce/</link>
+      <pubDate>Wed, 24 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/rce/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Sudo-Privilege</title>
+      <link>http://localhost:1313/tags/sudo-privilege/</link>
+      <pubDate>Wed, 24 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/sudo-privilege/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Xvfb</title>
+      <link>http://localhost:1313/tags/xvfb/</link>
+      <pubDate>Wed, 24 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/xvfb/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Buffer-Overflow</title>
       <link>http://localhost:1313/tags/buffer-overflow/</link>
@@ -55,13 +97,6 @@
       <link>http://localhost:1313/tags/port-forwarding/</link>
       <pubDate>Fri, 05 Dec 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/port-forwarding/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>RCE</title>
-      <link>http://localhost:1313/tags/rce/</link>
-      <pubDate>Fri, 05 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/rce/</guid>
       <description></description>
     </item>
     <item>
@@ -139,13 +174,6 @@
       <link>http://localhost:1313/tags/server-side-request-forgeryssrf/</link>
       <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/server-side-request-forgeryssrf/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Sudo-Privilege</title>
-      <link>http://localhost:1313/tags/sudo-privilege/</link>
-      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/sudo-privilege/</guid>
       <description></description>
     </item>
     <item>
