@@ -4,7 +4,15 @@ date: 2026-01-09
 draft: false
 description: "Writeup de la máquina Espo en HackMyVM."
 categories: ["HackMyVM"]
-tags: []
+tags:
+  [
+    "path-traversal",
+    "information-disclosure",
+    "backup-file-exposure",
+    "remote-command-execution",
+    "sudo-privilege",
+    "savelog",
+  ]
 image: "/images/espo.png"
 ---
 
