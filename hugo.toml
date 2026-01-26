@@ -13,10 +13,10 @@ theme = "PaperMod"
     enabled = true
     title = "Stark ×͜×"
     subtitle = "No busco atajos ni fama. Busco entender la raíz del sistema, porque solo quien comprende lo invisible puede dominar lo imposible."
-    imageUrl = "images/stark.jpeg"
+    imageUrl = "images/stark.png"
     imageTitle = "HackStark logo"
-    imageWidth = 170
-    imageHeight = 170
+    imageWidth = 180
+    imageHeight = 180
     favicon = "images/logo.png"
 
   [[params.socialIcons]]

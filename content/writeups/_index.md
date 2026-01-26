@@ -7,6 +7,12 @@ build:
   render: always
 ---
 
+<style>
+  .post-header h4, .post-header br{
+    display: none;
+  }
+</style>
+
 <div class="writeup-grid">
 
   <a href="/writeups/hackmyvm/" class="writeup-card">

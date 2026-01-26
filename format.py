@@ -4,8 +4,8 @@ import os
 import shutil
 
 # Rutas constantes
-RUTA_ORIGEN = r"C:\Users\danys\Documents\Brain\Files"
-RUTA_DESTINO = r"C:\Users\danys\Documents\HackStark\static\img"
+RUTA_ORIGEN = r"C:\Users\danys\OneDrive\Documentos\Brain\Files"
+RUTA_DESTINO = r"C:\Users\danys\OneDrive\Documentos\hackstark\static\img"
 
 def procesar_markdown(file_path):
     """Lee el archivo .md, reemplaza las imágenes y devuelve una lista de nombres."""

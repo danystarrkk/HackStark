@@ -4,10 +4,52 @@
     <title>Tags on Hack Stark ×͜×</title>
     <link>http://localhost:1313/tags/</link>
     <description>Recent content in Tags on Hack Stark ×͜×</description>
-    <generator>Hugo -- 0.154.3</generator>
+    <generator>Hugo -- 0.154.5</generator>
     <language>es</language>
-    <lastBuildDate>Wed, 24 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 09 Jan 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Backup-File-Exposure</title>
+      <link>http://localhost:1313/tags/backup-file-exposure/</link>
+      <pubDate>Fri, 09 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/backup-file-exposure/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Information-Disclosure</title>
+      <link>http://localhost:1313/tags/information-disclosure/</link>
+      <pubDate>Fri, 09 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/information-disclosure/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Path-Traversal</title>
+      <link>http://localhost:1313/tags/path-traversal/</link>
+      <pubDate>Fri, 09 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/path-traversal/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Remote-Command-Execution</title>
+      <link>http://localhost:1313/tags/remote-command-execution/</link>
+      <pubDate>Fri, 09 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/remote-command-execution/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Savelog</title>
+      <link>http://localhost:1313/tags/savelog/</link>
+      <pubDate>Fri, 09 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/savelog/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Sudo-Privilege</title>
+      <link>http://localhost:1313/tags/sudo-privilege/</link>
+      <pubDate>Fri, 09 Jan 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/sudo-privilege/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Gtkwave</title>
       <link>http://localhost:1313/tags/gtkwave/</link>
@@ -34,13 +76,6 @@
       <link>http://localhost:1313/tags/rce/</link>
       <pubDate>Wed, 24 Dec 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/rce/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Sudo-Privilege</title>
-      <link>http://localhost:1313/tags/sudo-privilege/</link>
-      <pubDate>Wed, 24 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/sudo-privilege/</guid>
       <description></description>
     </item>
     <item>
@@ -132,13 +167,6 @@
       <link>http://localhost:1313/tags/sqli-time-based/</link>
       <pubDate>Thu, 27 Nov 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/sqli-time-based/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Remote-Command-Execution</title>
-      <link>http://localhost:1313/tags/remote-command-execution/</link>
-      <pubDate>Wed, 05 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/remote-command-execution/</guid>
       <description></description>
     </item>
     <item>
