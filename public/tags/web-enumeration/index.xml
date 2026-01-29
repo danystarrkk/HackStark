@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Web-Enumeration on Hack Stark ×͜×</title>
+    <link>http://localhost:1313/tags/web-enumeration/</link>
+    <description>Recent content in Web-Enumeration on Hack Stark ×͜×</description>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>es</language>
+    <lastBuildDate>Mon, 15 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/web-enumeration/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HomeLab</title>
+      <link>http://localhost:1313/writeups/hackmyvm/homelab/</link>
+      <pubDate>Mon, 15 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/writeups/hackmyvm/homelab/</guid>
+      <description>Writeup de la máquina HomeLab en HackMyVM.</description>
+    </item>
+    <item>
+      <title>Console</title>
+      <link>http://localhost:1313/writeups/hackmyvm/console/</link>
+      <pubDate>Fri, 05 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/writeups/hackmyvm/console/</guid>
+      <description>Writeup de la máquina Console en HackMyVM.</description>
+    </item>
+    <item>
+      <title>Ximai</title>
+      <link>http://localhost:1313/writeups/hackmyvm/ximai/</link>
+      <pubDate>Thu, 27 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/writeups/hackmyvm/ximai/</guid>
+      <description>Writeup de la máquina Ximai en HackMyVM.</description>
+    </item>
+    <item>
+      <title>Griffin</title>
+      <link>http://localhost:1313/writeups/hackmyvm/griffin/</link>
+      <pubDate>Wed, 05 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/writeups/hackmyvm/griffin/</guid>
+      <description>Writeup de la máquina Griffin en HackMyVM.</description>
+    </item>
+    <item>
+      <title>Birdeye</title>
+      <link>http://localhost:1313/writeups/hackmyvm/birdeye/</link>
+      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/writeups/hackmyvm/birdeye/</guid>
+      <description>Writeup de la máquina Birdeye en HackMyVM.</description>
+    </item>
+    <item>
+      <title>SilentDev</title>
+      <link>http://localhost:1313/writeups/hackmyvm/silentdev/</link>
+      <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/writeups/hackmyvm/silentdev/</guid>
+      <description>Writeup de la máquina SilentDev en HackMyVM.</description>
+    </item>
+  </channel>
+</rss>
