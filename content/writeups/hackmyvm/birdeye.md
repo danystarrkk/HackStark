@@ -8,7 +8,7 @@ tags: ["linux", "server-side-request-forgery(ssrf)", "sudo-privilege", "web-enum
 image: "/images/Birdeye.png"
 ---
 <script>
-  window.location.replace("https://starkhack.netlify.app/writeup/hackmyvm/birdye");
+  window.location.replace("https://starkhack.netlify.app/writeup/hackmyvm/birdeye");
 </script>
 
 # Reconocimiento
