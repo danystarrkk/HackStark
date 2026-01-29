@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto" data-theme="dark">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <title>Symfonos 6 | Hack Stark ×͜×</title>
 <meta name="keywords" content="">
 <meta name="description" content="Writeup de la máquina Symfonos 6 en VulnHub.">
 <meta name="author" content="">
-<link rel="canonical" href="https://hackstark.netlify.app/writeups/vulnhub/symfonos6/">
+<link rel="canonical" href="http://localhost:1313/writeups/vulnhub/symfonos6/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fd5566c526ae48aadabd950798a2dc3568536401560eae5caac3765a42a9e7b5.css" integrity="sha256-/VVmxSauSKravZUHmKLcNWhTZAFWDq5cqsN2WkKp57U=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://hackstark.netlify.app/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://hackstark.netlify.app/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://hackstark.netlify.app/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://hackstark.netlify.app/apple-touch-icon.png">
-<link rel="mask-icon" href="https://hackstark.netlify.app/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://hackstark.netlify.app/writeups/vulnhub/symfonos6/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/writeups/vulnhub/symfonos6/">
 <noscript>
     <style>
         #theme-toggle,
@@ -38,92 +38,24 @@
 <link rel="apple-touch-icon" href="/images/logo.png">
 <link rel="shortcut icon" href="/images/logo.png">
 <meta name="theme-color" content="#2E3440">
-<meta property="og:url" content="https://hackstark.netlify.app/writeups/vulnhub/symfonos6/">
-  <meta property="og:site_name" content="Hack Stark ×͜×">
-  <meta property="og:title" content="Symfonos 6">
-  <meta property="og:description" content="Writeup de la máquina Symfonos 6 en VulnHub.">
-  <meta property="og:locale" content="es">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="writeups">
-    <meta property="article:published_time" content="2025-11-03T00:00:00+00:00">
-    <meta property="article:modified_time" content="2025-11-03T00:00:00+00:00">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Symfonos 6">
-<meta name="twitter:description" content="Writeup de la máquina Symfonos 6 en VulnHub.">
 
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Writeups",
-      "item": "https://hackstark.netlify.app/writeups/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "",
-      "item": "https://hackstark.netlify.app/writeups/vulnhub/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  3 ,
-      "name": "Symfonos 6",
-      "item": "https://hackstark.netlify.app/writeups/vulnhub/symfonos6/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Symfonos 6",
-  "name": "Symfonos 6",
-  "description": "Writeup de la máquina Symfonos 6 en VulnHub.",
-  "keywords": [
-    
-  ],
-  "articleBody": "Reconocimiento Vamos a comenzar con un escaneo, con el objetivo de detectar la maquina victima con ayuda de Arp-Scan:\narp-scan -I ens33 --localnet --ignoredups Como podemos ver la IP de la maquina es 192.168.100.116, ahora con ping vamos a realizar una petición para intentar descubrir que sistema es:\nping -c 1 192.168.100.116 Como podemos observar tenemos un ttl=64 lo que nos indica que es una maquina Linux.\nEn este punto vamos a comenzar con el escaneo de puertos con ayuda de Nmap:\nnmap -p- --open -sS --min-rate 5000 -n -v -Pn 192.168.100.116 -oG allPorts Como podemos observar tenemos los puertos 22,80,3000,3306,5000 a los cuales les vamos a realizar un escaneo mucho mas exhaustivo:\nnmap -p22,80,3000,3306,5000 -sCV 192.168.100.116 -oN target Podemos observar mucha información sobre los puerto abiertos así que vamos a analizar la información.\nVamos a comenzar a analizar todo y podemos comenzar por la web del puerto 80: Podemos ver que nos dice que no perdamos el tiempo mirando o revisando esta web.\nVamos a revisar la web que corre por el puerto 3000: vemos otra web en la cual podemos iniciar sesión pero en si no logramos ver nada mas.\nRevisemos la otra web que esta corriendo el el puerto 5000 a ver si logramos encontrar algo:\nNo podemos observar mucho, en este punto vamos a comenzar realizando fuzzing en la web que corre en el puerto 80:\ngobuster dir -u http://192.168.1.108 -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-big.txt -t 20 Podemos ver dos directorios, el uso de /posts y el otro de /flyspray donde vamos a analizar los dos: Podemos observar dos webs la de /posts no tiene mas que texto y no se puede hacer mucho la verdad pero la de flyspray vamos a analizarla para ver que mas podemos encontrar.\nNo logro ver nada totalmente grave en la web por lo que voy a registrarme y entrar a ver que logro encontrar: ya mi registre y ese es el panel vamos a ver que encontramos dentro del panel para ver si logramos listar o ver algo.\nEn realidad no encuentro nada por completo por lo que voy a intentar realizar fuzzing a este recurso para intentar encontrar algo que me sirva para ver versiones o información extra:\ngobuster dir -u http://192.168.1.108/flyspray -w /usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-big.txt -t 20 vemos muchas rutas pero la que primero me lista es la docs puede tener información del servicio así que vamos a revisarla: Como podemos observar tenemos muchos documentos de los cuales el de UPGRADING.TXT llama mi atención: En la primera línea podemos leer que al parecer el sistema se actualizo de la 0.9.9 a la 1.0, esta información nos sirve mucho ya que con una versión establecida podemos ver si tenemos vulnerabilidades:\nExplotación searchsploit flyspray podemos ver que si tenemos una vulnerabilidad conocida para la version 1.0.1 o menor por lo que vamos a ver que nos dice:\nsearchsploit -x php/webapps/2852.txt Esta vulnerabilidad no aplica pero tenemos otra que se encuentra mas arriba así que vamos a ver de que trata esa:\nsearchsploit -x php/webapps/41918.txt Vemos como todo esta extra detallado así que vamos a intentarlo:\nLo que nos explica es que el parámetro de real_name de un usuario es vulnerable a Cross-Site Scripting XSS ya que no esta correctamente configurado, lo que vamos a hacer en este caso primero será configurar directamente una etiqueta script que nos permita enviar una petición a nuestro servidor y ver si algún usuario nos envía una petición:\nCreamos la petición y lo vamos a guardar, ahora el punto es que este real name tiene que ser visible para algún usuario, para esto lo que vamos a hacer es enviar un mensaje al chat que tenemos en una de las tareas.\nUna vez que enviamos el mensaje se bloque por lo que ahora solo a modo de traza podemos ir al menu y desde nuestra maquina dejar corriendo un servidor en el puerto 80 con python y espera una petición: Perfecto si se esta ejecutando correctamente, en este punto lo que ser va a hacer es crear el archivo pwned.js y poner el código que nos proporciona el script ya que lo que va a intentar hacer es crear un usuario como administrador y en si el contenido quedaría de la siguiente manera:\nvar tok = document.getElementsByName(\"csrftoken\")[0].value; var txt = ' '; txt += ''; txt += ''; txt += ''; txt += ''; txt += '",
-  "wordCount" : "2650",
-  "inLanguage": "en",
-  "datePublished": "2025-11-03T00:00:00Z",
-  "dateModified": "2025-11-03T00:00:00Z",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://hackstark.netlify.app/writeups/vulnhub/symfonos6/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Hack Stark ×͜×",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://hackstark.netlify.app/favicon.ico"
-    }
-  }
-}
-</script>
 </head>
 <body id="top">
     <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://hackstark.netlify.app/" accesskey="h" title="Hack Stark ×͜× (Alt + H)">Hack Stark ×͜×</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Hack Stark ×͜× (Alt + H)">Hack Stark ×͜×</a>
             <div class="logo-switches">
             </div>
         </div>
         <ul id="menu">
             <li>
-                <a href="https://hackstark.netlify.app/" title="Home">
+                <a href="http://localhost:1313/" title="Home">
                     <span>Home</span>
                 </a>
             </li>
             <li>
-                <a href="https://hackstark.netlify.app/writeups/" title="WriteUps">
+                <a href="http://localhost:1313/writeups/" title="WriteUps">
                     <span>WriteUps</span>
                 </a>
             </li>
@@ -591,7 +523,7 @@ como vemos si funciona en este punto lo que vamos a hacer es ver si podemos asig
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="https://hackstark.netlify.app/">Hack Stark ×͜×</a></span> · 
+        <span>&copy; 2026 <a href="http://localhost:1313/">Hack Stark ×͜×</a></span> · 
 
     <span>
         Powered by
