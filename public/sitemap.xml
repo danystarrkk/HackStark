@@ -2,133 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://hackstark.netlify.app/writeups/hackmyvm/</loc>
-    <lastmod>2026-01-25T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/categories/</loc>
-    <lastmod>2026-01-25T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/</loc>
-    <lastmod>2026-01-25T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/categories/hackmyvm/</loc>
-    <lastmod>2026-01-25T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/writeups/hackmyvm/realsaga/</loc>
-    <lastmod>2026-01-25T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/backup-file-exposure/</loc>
-    <lastmod>2026-01-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/writeups/hackmyvm/espo/</loc>
-    <lastmod>2026-01-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/information-disclosure/</loc>
-    <lastmod>2026-01-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/path-traversal/</loc>
-    <lastmod>2026-01-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/remote-command-execution/</loc>
-    <lastmod>2026-01-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/savelog/</loc>
-    <lastmod>2026-01-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/sudo-privilege/</loc>
-    <lastmod>2026-01-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/</loc>
-    <lastmod>2026-01-09T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/gtkwave/</loc>
-    <lastmod>2025-12-24T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/irc-explotation/</loc>
-    <lastmod>2025-12-24T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/lfi/</loc>
-    <lastmod>2025-12-24T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/writeups/hackmyvm/pycrt/</loc>
-    <lastmod>2025-12-24T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/rce/</loc>
-    <lastmod>2025-12-24T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/xvfb/</loc>
-    <lastmod>2025-12-24T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/buffer-overflow/</loc>
-    <lastmod>2025-12-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/writeups/hackmyvm/homelab/</loc>
-    <lastmod>2025-12-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/information-leaked/</loc>
-    <lastmod>2025-12-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/linux/</loc>
-    <lastmod>2025-12-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/sudo-privileges/</loc>
-    <lastmod>2025-12-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/web-enumeration/</loc>
-    <lastmod>2025-12-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/x-forwarded-for/</loc>
-    <lastmod>2025-12-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/writeups/hackmyvm/console/</loc>
-    <lastmod>2025-12-05T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/port-forwarding/</loc>
-    <lastmod>2025-12-05T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/suid/</loc>
-    <lastmod>2025-12-05T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/tls-inspection/</loc>
-    <lastmod>2025-12-05T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/hardcoded-credentials/</loc>
-    <lastmod>2025-11-27T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/python-script/</loc>
-    <lastmod>2025-11-27T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/sqli-time-based/</loc>
-    <lastmod>2025-11-27T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/writeups/hackmyvm/ximai/</loc>
-    <lastmod>2025-11-27T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/writeups/hackmyvm/griffin/</loc>
-    <lastmod>2025-11-05T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/sudoers-misconfig/</loc>
-    <lastmod>2025-11-05T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/token-leak/</loc>
-    <lastmod>2025-11-05T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://hackstark.netlify.app/writeups/vulnhub/</loc>
     <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://hackstark.netlify.app/writeups/hackmyvm/birdeye/</loc>
+    <loc>https://hackstark.netlify.app/categories/</loc>
     <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://hackstark.netlify.app/tags/file-upload-vulnerability/</loc>
-    <lastmod>2025-11-03T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/remote-code-execution/</loc>
-    <lastmod>2025-11-03T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/tags/server-side-request-forgeryssrf/</loc>
-    <lastmod>2025-11-03T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hackstark.netlify.app/writeups/hackmyvm/silentdev/</loc>
+    <loc>https://hackstark.netlify.app/</loc>
     <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://hackstark.netlify.app/writeups/vulnhub/symfonos6/</loc>
@@ -137,7 +17,8 @@
     <loc>https://hackstark.netlify.app/categories/vulnhub/</loc>
     <lastmod>2025-11-03T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://hackstark.netlify.app/tags/wildcard-injection/</loc>
-    <lastmod>2025-11-03T00:00:00+00:00</lastmod>
+    <loc>https://hackstark.netlify.app/writeups/hackmyvm/</loc>
+  </url><url>
+    <loc>https://hackstark.netlify.app/tags/</loc>
   </url>
 </urlset>
